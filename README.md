@@ -60,15 +60,15 @@ pipeline.
 Run in order — each stage's output feeds the next:
 
 ```bash
-python src/preprocessing.py        # Phase 3 - clean price + news, filter to 3 commodities/benchmark markets
-python src/sentiment.py            # Phase 5 - FinBERT scoring + price-direction override
-python src/aggregate_sentiment.py  # Phase 6 - headline-level -> daily sentiment
-python src/merge_price_sentiment.py# Phase 7 - align price calendar with sentiment (has_news flag)
-python src/features.py             # Phase 8 - rolling/momentum price features
-python src/generate_target.py      # Phase 9 - spike label (t -> t+1, next TRADING day)
-python src/train.py                # Phase 10/11 - chronological split, LR/RF/XGBoost comparison
-python src/explain.py              # Phase 13 - SHAP feature importance (Random Forest)
-streamlit run app.py               # Phase 14 - dashboard
+python src/preprocessing.py         # Phase 3 - clean price + news, filter to 3 commodities/benchmark markets
+python src/sentiment.py             # Phase 5 - FinBERT scoring + price-direction override
+python src/aggregate_sentiment.py   # Phase 6 - headline-level -> daily sentiment
+python src/merge_price_sentiment.py # Phase 7 - align price calendar with sentiment (has_news flag)
+python src/features.py              # Phase 8 - rolling/momentum price features
+python src/generate_target.py       # Phase 9 - spike label (t -> t+1, next TRADING day)
+python src/train.py                 # Phase 10/11 - chronological split, LR/RF/XGBoost comparison
+python src/explain.py               # Phase 13 - SHAP feature importance (Random Forest)
+streamlit run app.py                # Phase 14 - dashboard
 ```
 
 ## Key design decisions (and why)
@@ -180,3 +180,49 @@ important feature.
   2013-07-01–2023-06-30 window, not real-time prices or news.
 
 ## Project structure
+
+
+## Phase 16 (in progress): live data access — proof of concept only
+
+`src/fetch_live_price.py` connects to the same government source
+(data.gov.in's Agmarknet mandi price API, resource ID
+`9ef84268-d588-465a-a308-a864a43d0070`) that the historical training
+data was built from, confirming the fetch mechanism works end-to-end
+against real, current data — not a static snapshot.
+
+**What was found and fixed along the way** (real engineering, not a
+clean first pass):
+- The API silently returns an empty HTTP 502 for requests without a
+  browser-like `User-Agent` header — confirmed by isolating headers as
+  the only variable between an identical failing and succeeding
+  request. Not documented anywhere; found by elimination.
+- The shared public sample API key caps responses at 10 records
+  regardless of the `limit` parameter requested — masked as an
+  apparent "no data" result until traced back to the key itself.
+- The `filters[market]` query parameter is silently ignored
+  server-side — confirmed by sending two different market names and
+  getting two different, mutually inconsistent result sets, neither
+  matching either requested value. Workaround: fetch by commodity
+  nationwide, filter to the target market client-side in pandas.
+- All three benchmark markets (Lasalgaon, Indore, Kanpur Grain) now
+  report under an "APMC"-suffixed name in live data, consistent with
+  the same rename found in the historical bulk export around
+  November 2025 (see Phase 3 validation).
+
+**What this does NOT yet do**: fetching a single live price is not the
+same as generating a live prediction. The trained models require
+rolling/momentum features computed from a *sequence* of recent prices,
+not one isolated day's value — appending a fetched live price onto the
+historical series and regenerating that day's feature row was
+deliberately left as **future work**, not built. The dashboard's
+predictions remain based on the fixed 2013-07-01–2023-06-30 window.
+
+**Also observed, not yet conclusive**: on the one day tested so far
+(a Sunday), none of the three benchmark markets reported any price at
+all, while hundreds of other markets nationwide did report that same
+commodity. Consistent with mandis not trading on Sundays — the same
+weekly reporting-gap pattern the historical data's trading-day-vs-
+calendar-day target definition (Phase 9) was built to handle — but
+confirmed only for one day so far. `data/interim/live_fetch_log.csv`
+accumulates one row per market per run, for anyone who wants to keep
+tracking this pattern across more days.
