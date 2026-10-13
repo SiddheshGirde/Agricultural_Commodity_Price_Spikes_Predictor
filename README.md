@@ -182,47 +182,37 @@ important feature.
 ## Project structure
 
 
-## Phase 16 (in progress): live data access — proof of concept only
+## Phase 16: daily live price collection + Live monitor tab
 
-`src/fetch_live_price.py` connects to the same government source
-(data.gov.in's Agmarknet mandi price API, resource ID
-`9ef84268-d588-465a-a308-a864a43d0070`) that the historical training
-data was built from, confirming the fetch mechanism works end-to-end
-against real, current data — not a static snapshot.
+**Status:** the collector and the dashboard tab are built and were tested against a mocked API
+(outages, empty responses, missed days, duplicates, stale data, multi-year gaps). A live prediction
+appears only once 7 recent trading days of real prices have been collected, so end-to-end results on
+real data depend on how long the collector has been running.
 
-**What was found and fixed along the way** (real engineering, not a
-clean first pass):
-- The API silently returns an empty HTTP 502 for requests without a
-  browser-like `User-Agent` header — confirmed by isolating headers as
-  the only variable between an identical failing and succeeding
-  request. Not documented anywhere; found by elimination.
-- The shared public sample API key caps responses at 10 records
-  regardless of the `limit` parameter requested — masked as an
-  apparent "no data" result until traced back to the key itself.
-- The `filters[market]` query parameter is silently ignored
-  server-side — confirmed by sending two different market names and
-  getting two different, mutually inconsistent result sets, neither
-  matching either requested value. Workaround: fetch by commodity
-  nationwide, filter to the target market client-side in pandas.
-- All three benchmark markets (Lasalgaon, Indore, Kanpur Grain) now
-  report under an "APMC"-suffixed name in live data, consistent with
-  the same rename found in the historical bulk export around
-  November 2025 (see Phase 3 validation).
+**How it works**
+- `src/live_pipeline.py collect` fetches the benchmark-market price from data.gov.in. A Windows
+  scheduled task (`setup_task.ps1` / `run_collect.bat`) runs it daily, runs it as soon as possible if
+  a run was missed, and retries up to 6 times, 10 minutes apart, if the API is down.
+- **One fetch per day:** a finished outcome (row saved, market confirmed not reporting, or date
+  already recorded) closes the day. An outage does not, so it can be retried.
+- **Datewise, insert-only:** rows are keyed by the data's own arrival date. An existing date is never
+  overwritten and earlier rows never change. Only the market's latest date is averaged.
+- **Scoring uses only consecutive recent live rows** (at least 7, no gap over 7 days, latest row
+  at most 7 days old) and says why it refuses otherwise. An earlier version appended a live price
+  directly after the 2023 history and computed features across a ~3-year gap; that was replaced.
+- The dashboard's **Live monitor** tab reads only the saved files and never calls the API, so it
+  works while the API is down. Live and historical series are deliberately not joined.
 
-**What this does NOT yet do**: fetching a single live price is not the
-same as generating a live prediction. The trained models require
-rolling/momentum features computed from a *sequence* of recent prices,
-not one isolated day's value — appending a fetched live price onto the
-historical series and regenerating that day's feature row was
-deliberately left as **future work**, not built. The dashboard's
-predictions remain based on the fixed 2013-07-01–2023-06-30 window.
+**API quirks found and worked around:** empty HTTP 502 unless a browser-like `User-Agent` is sent;
+the shared sample key caps responses at 10 records; the `filters[market]` parameter is silently
+ignored (filtering is done client-side); live market names carry an "APMC" suffix.
 
-**Also observed, not yet conclusive**: on the one day tested so far
-(a Sunday), none of the three benchmark markets reported any price at
-all, while hundreds of other markets nationwide did report that same
-commodity. Consistent with mandis not trading on Sundays — the same
-weekly reporting-gap pattern the historical data's trading-day-vs-
-calendar-day target definition (Phase 9) was built to handle — but
-confirmed only for one day so far. `data/interim/live_fetch_log.csv`
-accumulates one row per market per run, for anyone who wants to keep
-tracking this pattern across more days.
+**Limits**
+- No live news is collected, so live predictions are **price-only** (sentiment set to "no news").
+- The models were trained on 2013-2023 prices using absolute price levels, so scoring current
+  prices is out-of-time. Treat probabilities as indicative, not calibrated.
+- A day with no collector run has no row. Backfilling is not supported (as observed, the API
+  returns only the latest day; date filtering was not tested).
+- Wheat's live price is tracked but not scored (no viable model, see above).
+
+**Run:** `python src/live_pipeline.py collect | score | status`, then `streamlit run app.py`.
