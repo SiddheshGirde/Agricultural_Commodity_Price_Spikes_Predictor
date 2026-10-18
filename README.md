@@ -184,35 +184,48 @@ important feature.
 
 ## Phase 16: daily live price collection + Live monitor tab
 
-**Status:** the collector and the dashboard tab are built and were tested against a mocked API
-(outages, empty responses, missed days, duplicates, stale data, multi-year gaps). A live prediction
-appears only once 7 recent trading days of real prices have been collected, so end-to-end results on
-real data depend on how long the collector has been running.
+**Status:** built and tested against a mocked API (outages, empty responses, missed days,
+duplicates, stale data, multi-year gaps, renamed markets). Real collection began in mid-October
+2026. A live prediction appears only after 7 recent trading days of real prices have been
+collected for a commodity, so results on real data grow with the collector's running time.
 
 **How it works**
 - `src/live_pipeline.py collect` fetches the benchmark-market price from data.gov.in. A Windows
-  scheduled task (`setup_task.ps1` / `run_collect.bat`) runs it daily, runs it as soon as possible if
-  a run was missed, and retries up to 6 times, 10 minutes apart, if the API is down.
-- **One fetch per day:** a finished outcome (row saved, market confirmed not reporting, or date
-  already recorded) closes the day. An outage does not, so it can be retried.
-- **Datewise, insert-only:** rows are keyed by the data's own arrival date. An existing date is never
-  overwritten and earlier rows never change. Only the market's latest date is averaged.
+  scheduled task (`setup_task.ps1` / `run_collect.bat`) runs it daily at 8 PM, runs it as soon as
+  possible if a run was missed, and retries up to 6 times, 10 minutes apart, if the API is down.
+- **One settled fetch per day:** from `SETTLE_HOUR` (18:00, a guess) a finished outcome closes the
+  day. Earlier runs never close it and never save a partly filled current day, but can save a
+  completed earlier day (catch-up). An outage never closes the day.
+- **Datewise, insert-only:** rows are keyed by the data's own arrival date. An existing date is
+  never overwritten and earlier rows never change. Only the market's latest date is averaged.
 - **Scoring uses only consecutive recent live rows** (at least 7, no gap over 7 days, latest row
-  at most 7 days old) and says why it refuses otherwise. An earlier version appended a live price
-  directly after the 2023 history and computed features across a ~3-year gap; that was replaced.
+  at most 7 days old) and states why it refuses otherwise. An earlier version appended a live
+  price directly after the 2023 history and computed features across a ~3-year gap; it was replaced.
 - The dashboard's **Live monitor** tab reads only the saved files and never calls the API, so it
   works while the API is down. Live and historical series are deliberately not joined.
+- `probe` is a read-only command that records how full the feed is at a given hour, so
+  `SETTLE_HOUR` can be tuned from evidence.
 
-**API quirks found and worked around:** empty HTTP 502 unless a browser-like `User-Agent` is sent;
-the shared sample key caps responses at 10 records; the `filters[market]` parameter is silently
-ignored (filtering is done client-side); live market names carry an "APMC" suffix.
+**Findings while building it (each found from real output, not assumed)**
+- The API returns an empty HTTP 502 unless a browser-like `User-Agent` is sent; the shared sample
+  key caps responses at 10 records; the `market` filter does not behave as an exact-name filter,
+  so filtering is done client-side.
+- **Market names in the live feed are formatted differently from the bulk archive:** spacing
+  (`Kanpur(Grain) APMC` vs `Kanpur (Grain) APMC`), trailing spaces, and APMC as a prefix
+  (`APMC Lasalgaon`), a suffix, or absent. Early versions matched exact strings and missed wheat and
+  onion; the collector now logs similarly named markets, which exposed this. Matching ignores
+  whitespace, case and APMC. Sub-yards (e.g. `Lasalgaon(Vinchur)`) are different markets and are
+  never substituted for the benchmark.
+- **The day's feed fills in gradually** (onion: 601 rows at 14:50, 759 at 19:34 on 2026-10-16),
+  which is why nothing is saved for the current day before the settle hour.
 
 **Limits**
 - No live news is collected, so live predictions are **price-only** (sentiment set to "no news").
 - The models were trained on 2013-2023 prices using absolute price levels, so scoring current
   prices is out-of-time. Treat probabilities as indicative, not calibrated.
-- A day with no collector run has no row. Backfilling is not supported (as observed, the API
-  returns only the latest day; date filtering was not tested).
+- A day with no collector run has no row; as observed, the API returns only the latest day
+  (date filtering was not tested). The PC must be on and logged in for the scheduled task.
+- The settle hour is not yet validated; the probe data will show whether the feed is complete by then.
 - Wheat's live price is tracked but not scored (no viable model, see above).
 
-**Run:** `python src/live_pipeline.py collect | score | status`, then `streamlit run app.py`.
+**Run:** `python src/live_pipeline.py collect | score | status | probe`, then `streamlit run app.py`.

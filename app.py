@@ -51,7 +51,9 @@ SPIKE_THRESHOLD_PCT = 5.0
 
 STATUS_TEXT = {
     "ok": "Collected",
-    "market_not_reporting": "Benchmark market did not report (normal gap)",
+    "market_not_reporting": "Benchmark market did not report today (day closed)",
+    "market_not_reported_yet": "Benchmark market has not reported yet - will check again this evening",
+    "deferred_partial_day": "Today's data may be incomplete - will be saved in the evening run",
     "date_already_recorded": "Date already recorded",
     "api_unreachable": "Data source unreachable - will retry",
     "inconclusive_truncated": "Inconclusive (partial API response) - will retry",
@@ -202,8 +204,8 @@ def render_live(commodity, metadata):
 
     # --- collector status
     last_attempt, status_text = "never", "No collection attempts logged yet"
-    if lp.LIVE_LOG_PATH.exists():
-        log = pd.read_csv(lp.LIVE_LOG_PATH)
+    log = lp.read_log()
+    if len(log):
         log = log[log["commodity"] == commodity]
         if len(log):
             last = log.iloc[-1]
@@ -265,9 +267,9 @@ def render_live(commodity, metadata):
 
     # --- transparency
     with st.expander("Collector log (last 10 attempts)"):
-        if lp.LIVE_LOG_PATH.exists():
-            log = pd.read_csv(lp.LIVE_LOG_PATH)
-            log = log[log["commodity"] == commodity].tail(10)
+        log = lp.read_log()
+        log = log[log["commodity"] == commodity].tail(10) if len(log) else log
+        if len(log):
             st.dataframe(log[["timestamp", "run_date", "status", "detail"]].fillna(""), hide_index=True)
         else:
             st.write("No collector runs logged yet.")

@@ -16,9 +16,13 @@ DESIGN: collecting and scoring are separate steps
   and `score` never touch the network.
 
 DAILY-ONCE, DATEWISE RULES
-  - One fetch per day: once a day has a finished outcome (row saved, market
-    confirmed not reporting, or date already recorded) further runs that day
-    make NO API call. An outage does NOT lock the day, so it can be retried.
+  - One settled fetch per day: at/after SETTLE_HOUR, once a day has a finished
+    outcome (row saved, market confirmed not reporting, or date already
+    recorded) further runs that day make NO API call. An outage does NOT lock
+    the day, so it can be retried.
+  - Before SETTLE_HOUR nothing closes the day and today's partial data is never
+    saved - but a COMPLETED earlier day can still be saved (catch-up after a
+    missed evening run). The evening run then still collects today.
   - Datewise, insert-only: rows are keyed by the data's own arrival date. A
     date already in the history is never overwritten; past dates never change.
   - `collect --force` bypasses the once-a-day lock (it still never overwrites
@@ -30,6 +34,7 @@ USAGE
   python src/live_pipeline.py collect --force
   python src/live_pipeline.py score
   python src/live_pipeline.py status
+  python src/live_pipeline.py probe      # read-only: log how full the feed is right now
 
 EXIT CODES (for the scheduler's retry loop)
   0 = finished (or nothing to do);  2 = at least one commodity's day is still
@@ -49,7 +54,10 @@ KNOWN LIMITS (stated, not hidden)
   - Wheat has no viable model (Phase 11): its prices are collected, not scored.
 """
 
+import csv
 import os
+import re
+import shutil
 import sys
 import time
 from datetime import datetime
@@ -92,10 +100,16 @@ BACKOFF_SECONDS = [3, 8]       # waits between attempts 1->2 and 2->3
 TIMEOUT = (10, 30)             # (connect, read) seconds - never wait forever
 PAGE_LIMIT = 1000
 
+# Before this local hour, today's feed may still be filling in (hourly refreshes were
+# observed). Nothing can CLOSE a day before it, and today's partial data is never saved.
+# 18 is a guess - adjust after looking at the collector log for a few days.
+SETTLE_HOUR = 18
+
 MIN_ROWS = 7                   # rolling_mean_7d / rolling_std_7d need 7 rows
 MAX_INTERNAL_GAP_DAYS = 7      # mandis close on Sundays/holidays; a week is already generous
 MAX_STALE_DAYS = 7
 
+LOG_COLS = ["timestamp", "run_date", "settled", "commodity", "market", "status", "detail"]
 HISTORY_COLS = ["Commodity", "Arrival_Date", "price", "min_price", "max_price",
                 "n_varieties_reported", "source"]
 
@@ -107,6 +121,11 @@ LOCK_STATUSES = {"ok", "market_not_reporting", "date_already_recorded"}
 def _today():
     """Calendar date used for the once-a-day lock (patched in tests)."""
     return datetime.now().date()
+
+
+def _hour():
+    """Local hour of day (patched in tests)."""
+    return datetime.now().hour
 
 
 class FetchError(Exception):
@@ -144,12 +163,26 @@ def fetch_nationwide(commodity: str):
     raise FetchError(last_err)
 
 
+def market_key(name) -> str:
+    """Formatting-insensitive market identity. The live feed formats names differently
+    from the bulk archive: 'Kanpur(Grain) APMC' vs 'Kanpur (Grain) APMC', trailing
+    spaces, and APMC as a prefix ('APMC Lasalgaon') or suffix ('Indore APMC') or absent.
+    Drops whitespace, case and a leading/trailing 'APMC'. Sub-yards stay distinct:
+    'Lasalgaon(Vinchur)' != 'Lasalgaon'."""
+    k = re.sub(r"\s+", "", str(name)).lower()
+    if k.startswith("apmc") and len(k) > 4:
+        k = k[4:]
+    if k.endswith("apmc") and len(k) > 4:
+        k = k[:-4]
+    return k
+
+
 def aggregate_benchmark(df: pd.DataFrame, market: str, commodity: str):
     """Mean across varieties at the benchmark market - the same aggregation
     Phase 3 applied to historical data. Returns (row, matched_rows) or (None, None)."""
     if df.empty:
         return None, None
-    match = df[(df["market"] == market) & df["arrival_date"].notna()]
+    match = df[(df["market"].map(market_key) == market_key(market)) & df["arrival_date"].notna()]
     if match.empty:
         return None, None
     # Never average prices from different dates into one row.
@@ -190,31 +223,86 @@ def append_live_row(row: dict) -> bool:
     return True
 
 
-def log_fetch(commodity: str, market: str, status: str, detail: str = ""):
+def read_log() -> pd.DataFrame:
+    """Tolerant log reader. Earlier versions wrote 5- and 6-column rows into this
+    same file, so a plain pd.read_csv can fail on a mixed file. Legacy rows carry no
+    'settled' flag: it is reconstructed from the row's timestamp (a run before
+    SETTLE_HOUR could not have closed the day), never assumed True."""
+    if not LIVE_LOG_PATH.exists():
+        return pd.DataFrame(columns=LOG_COLS)
+    out = []
+    with open(LIVE_LOG_PATH, newline="", encoding="utf-8") as f:
+        rd = csv.reader(f)
+        next(rd, None)                                   # header (any legacy layout)
+        for r in rd:
+            if len(r) == 7:
+                ts, run_date, settled, commodity, market, status, detail = r
+                settled = str(settled).strip().lower() == "true"
+            elif len(r) == 6:
+                ts, run_date, commodity, market, status, detail = r
+                settled = None
+            elif len(r) == 5:
+                ts, commodity, market, status, detail = r
+                run_date, settled = ts[:10], None
+            else:
+                continue
+            if settled is None:
+                t = pd.to_datetime(ts, errors="coerce")
+                settled = bool(pd.notna(t) and t.hour >= SETTLE_HOUR)
+            out.append([ts, run_date, settled, commodity, market, status, detail])
+    return pd.DataFrame(out, columns=LOG_COLS)
+
+
+def ensure_log_format():
+    """One-time, automatic repair: if the file has a legacy header or mixed row
+    widths, back it up (once) and rewrite it in the current 7-column layout."""
+    if not LIVE_LOG_PATH.exists():
+        return
+    with open(LIVE_LOG_PATH, newline="", encoding="utf-8") as f:
+        rd = csv.reader(f)
+        header = next(rd, [])
+        current = header == LOG_COLS and all(len(r) == 7 for r in rd if r)
+    if current:
+        return
+    bak = LIVE_LOG_PATH.with_name(LIVE_LOG_PATH.name + ".bak")
+    if not bak.exists():
+        shutil.copy2(LIVE_LOG_PATH, bak)
+    read_log().to_csv(LIVE_LOG_PATH, index=False)
+
+
+def log_fetch(commodity: str, market: str, status: str, detail: str = "", settled: bool = True):
+    ensure_log_format()
     entry = pd.DataFrame([{"timestamp": datetime.now().isoformat(timespec="seconds"),
-                           "run_date": str(_today()),
+                           "run_date": str(_today()), "settled": settled,
                            "commodity": commodity, "market": market,
-                           "status": status, "detail": detail}])
+                           "status": status, "detail": detail}], columns=LOG_COLS)
     INTERIM.mkdir(parents=True, exist_ok=True)
     entry.to_csv(LIVE_LOG_PATH, mode="a", header=not LIVE_LOG_PATH.exists(), index=False)
 
 
 def done_today(commodity: str):
-    """Returns the finishing status if this commodity already has a finished
-    outcome logged for today, else None."""
-    if not LIVE_LOG_PATH.exists():
-        return None
-    log = pd.read_csv(LIVE_LOG_PATH)
+    """Finishing status if today already has a finished AND settled outcome
+    (logged at/after SETTLE_HOUR, or forced), else None. Earlier outcomes never
+    close the day, so a morning/catch-up run cannot block the evening run."""
+    log = read_log()
     hit = log[(log["commodity"] == commodity) & (log["run_date"] == str(_today()))
-              & (log["status"].isin(LOCK_STATUSES))]
+              & (log["status"].isin(LOCK_STATUSES)) & log["settled"]]
     return hit["status"].iloc[-1] if len(hit) else None
+
+
+def near_matches(df: pd.DataFrame, market: str) -> list:
+    """Markets in today's feed sharing the benchmark's first word (e.g. 'Lasalgaon') -
+    shows in the log whether a market is absent or merely renamed."""
+    key = market.split()[0]
+    return sorted(df.loc[df["market"].str.contains(key, case=False, na=False, regex=False), "market"].unique())
 
 
 def collect(force: bool = False):
     if not API_KEY:
         raise SystemExit("DATA_GOV_IN_API_KEY missing - add it to .env before running collect.")
-    print(f"=== COLLECT ({_today()}) ===")
-    left_open = []   # commodities whose day is still open because of a failure (worth retrying)
+    settled = force or _hour() >= SETTLE_HOUR
+    print(f"=== COLLECT ({_today()}, {'settled' if settled else f'before {SETTLE_HOUR}:00 - today is not final yet'}) ===")
+    left_open = []   # commodities whose day is still open because of a FAILURE (worth retrying)
     for commodity, market in BENCHMARK_MARKETS_LIVE.items():
         finished = done_today(commodity)
         if finished and not force:
@@ -226,7 +314,7 @@ def collect(force: bool = False):
         except FetchError as e:
             print(f"{commodity}: API UNREACHABLE after {RETRIES} attempts ({e}). Nothing collected; "
                   f"today stays open - re-run later.")
-            log_fetch(commodity, market, "api_unreachable", str(e))
+            log_fetch(commodity, market, "api_unreachable", str(e), settled)
             left_open.append(commodity)
             continue
 
@@ -235,28 +323,80 @@ def collect(force: bool = False):
             if truncated:
                 print(f"{commodity}: {market} not found, but the API returned fewer rows than its total - "
                       f"INCONCLUSIVE, today stays open.")
-                log_fetch(commodity, market, "inconclusive_truncated")
+                log_fetch(commodity, market, "inconclusive_truncated", settled=settled)
                 left_open.append(commodity)
             elif df.empty:
                 print(f"{commodity}: API returned zero rows nationwide - today stays open.")
-                log_fetch(commodity, market, "no_data_nationwide")
+                log_fetch(commodity, market, "no_data_nationwide", settled=settled)
                 left_open.append(commodity)
             else:
-                print(f"{commodity}: {market} not reporting today ({len(df)} other markets did) - normal gap, day closed.")
-                log_fetch(commodity, market, "market_not_reporting", f"{len(df)} other markets reported")
+                feed_date = df["arrival_date"].max()
+                near = near_matches(df, market)
+                detail = (f"{len(df)} other markets reported (feed dated "
+                          f"{feed_date.date() if pd.notna(feed_date) else '?'}); names containing "
+                          f"'{market.split()[0]}': {near[:6] if near else 'none'}")
+                if settled:
+                    print(f"{commodity}: {market} did not report today - day closed. {detail}")
+                    log_fetch(commodity, market, "market_not_reporting", detail, settled)
+                else:
+                    print(f"{commodity}: {market} has not reported yet - may still report later today; "
+                          f"day stays open. {detail}")
+                    log_fetch(commodity, market, "market_not_reported_yet", detail, settled)
+            continue
+
+        row_date = row["Arrival_Date"].date()
+        if row_date >= _today() and not settled:
+            print(f"{commodity}: {market} has data dated {row_date}, but today may still be incomplete - "
+                  f"NOT saved; the evening run will save it.")
+            log_fetch(commodity, market, "deferred_partial_day", str(row_date), settled)
             continue
 
         if not append_live_row(row):
-            print(f"{commodity}: {row['Arrival_Date'].date()} is already recorded - left unchanged (insert-only).")
-            log_fetch(commodity, market, "date_already_recorded", str(row["Arrival_Date"].date()))
+            print(f"{commodity}: {row_date} is already recorded - left unchanged (insert-only).")
+            log_fetch(commodity, market, "date_already_recorded", str(row_date), settled)
             continue
 
         LIVE_RAW_DIR.mkdir(parents=True, exist_ok=True)   # keep raw rows so aggregation can be redone later
-        matched.to_csv(LIVE_RAW_DIR / f"{commodity.lower()}_{row['Arrival_Date'].date()}.csv", index=False)
-        print(f"{commodity}: OK - added {row['Arrival_Date'].date()}  price={row['price']:.2f} "
-              f"({row['n_varieties_reported']} varieties)")
-        log_fetch(commodity, market, "ok", f"price={row['price']:.2f}")
+        matched.to_csv(LIVE_RAW_DIR / f"{commodity.lower()}_{row_date}.csv", index=False)
+        note = "" if settled else "  (earlier completed day; today stays open for the evening run)"
+        print(f"{commodity}: OK - added {row_date}  price={row['price']:.2f} "
+              f"({row['n_varieties_reported']} varieties){note}")
+        log_fetch(commodity, market, "ok", f"price={row['price']:.2f}", settled)
     return left_open
+
+
+PROBE_LOG_PATH = INTERIM / "live_feed_probe.csv"
+
+
+def probe():
+    """READ-ONLY. Fetches and records feed counts so SETTLE_HOUR can be chosen from
+    evidence. Never saves a price and never closes a day. Run it at several hours."""
+    if not API_KEY:
+        raise SystemExit("DATA_GOV_IN_API_KEY missing - add it to .env before running probe.")
+    print(f"=== PROBE {datetime.now():%Y-%m-%d %H:%M} (nothing is saved or locked) ===")
+    out = []
+    for commodity, market in BENCHMARK_MARKETS_LIVE.items():
+        try:
+            df, truncated = fetch_nationwide(commodity)
+        except FetchError as e:
+            print(f"{commodity}: API unreachable ({e})")
+            continue
+        mine = df[df["market"].map(market_key) == market_key(market)] if len(df) else df
+        feed_date = df["arrival_date"].max() if len(df) else pd.NaT
+        bench_date = mine["arrival_date"].max() if len(mine) else pd.NaT
+        entry = {"timestamp": datetime.now().isoformat(timespec="seconds"), "commodity": commodity,
+                 "feed_rows": len(df), "feed_markets": int(df["market"].nunique()) if len(df) else 0,
+                 "feed_date": feed_date.date() if pd.notna(feed_date) else "",
+                 "benchmark_rows": len(mine),
+                 "benchmark_date": bench_date.date() if pd.notna(bench_date) else "",
+                 "truncated": truncated}
+        out.append(entry)
+        print(f"{commodity}: feed {entry['feed_rows']} rows / {entry['feed_markets']} markets "
+              f"(dated {entry['feed_date'] or '?'}) | {market}: {entry['benchmark_rows']} row(s)"
+              f"{' dated ' + str(entry['benchmark_date']) if entry['benchmark_date'] else ' - not in feed'}")
+    if out:
+        INTERIM.mkdir(parents=True, exist_ok=True)
+        pd.DataFrame(out).to_csv(PROBE_LOG_PATH, mode="a", header=not PROBE_LOG_PATH.exists(), index=False)
 
 
 # ------------------------------------------------------------------ score
@@ -350,10 +490,10 @@ def status():
         d = done_today(commodity)
         print(f"{commodity}: {len(h)} live row(s), latest {last}  (need {MIN_ROWS} recent rows to score) | "
               f"today: {d if d else 'not yet collected'}")
-    if LIVE_LOG_PATH.exists():
-        log = pd.read_csv(LIVE_LOG_PATH)
+    log = read_log()
+    if len(log):
         print("\nLast 6 fetch attempts:")
-        print(log.tail(6).to_string(index=False))
+        print(log.tail(6)[["timestamp", "commodity", "status", "settled", "detail"]].to_string(index=False))
 
 
 EXIT_DONE, EXIT_RETRY = 0, 2
@@ -363,6 +503,9 @@ def main(argv) -> int:
     cmd = argv[1] if len(argv) > 1 else "run"
     if cmd == "collect":
         return EXIT_RETRY if collect(force="--force" in argv) else EXIT_DONE
+    if cmd == "probe":
+        probe()
+        return EXIT_DONE
     if cmd == "score":
         score()
         return EXIT_DONE
@@ -373,7 +516,7 @@ def main(argv) -> int:
         left_open = collect(force="--force" in argv)
         score()
         return EXIT_RETRY if left_open else EXIT_DONE
-    raise SystemExit("usage: live_pipeline.py [collect|score|status|run] [--force]")
+    raise SystemExit("usage: live_pipeline.py [collect|score|status|probe|run] [--force]")
 
 
 if __name__ == "__main__":
