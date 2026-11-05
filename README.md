@@ -1,3 +1,6 @@
+Note - Readme is yet to be updated (5th Nov 2026)   *last updated 12 Oct 2026
+
+
 # Agricultural Commodity Price Spike Predictor
 
 NLP-based sentiment analysis of Indian agricultural market news (FinBERT),
