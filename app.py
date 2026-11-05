@@ -117,11 +117,11 @@ def show_performance(commodity: str, metadata: dict):
 # ====================================================================== historical
 
 def render_historical(commodity, df, news_df, metadata, feature_cols):
-    st.warning(
-        "**Backtest data:** bounded to the validated modeling period (2013-07-01 to 2023-06-30) - the news "
-        "dataset ends there. 'Latest' below means the last date in that window, not today. "
-        "See the **Live monitor** tab for prices collected daily."
-    )
+    # st.warning(
+    #     "**Backtest data:** bounded to the validated modeling period (2013-07-01 to 2023-06-30) - the news "
+    #     "dataset ends there. 'Latest' below means the last date in that window, not today. "
+    #     "See the **Live monitor** tab for prices collected daily."
+    # )
     sub = df[df["commodity"] == commodity].sort_values("date").reset_index(drop=True)
     latest_row = sub.iloc[-1]
 
@@ -187,11 +187,11 @@ def render_historical(commodity, df, news_df, metadata, feature_cols):
 # ====================================================================== live
 
 def render_live(commodity, metadata):
-    st.info(
-        "**How this tab works:** a scheduled collector (`src/live_pipeline.py collect`) saves one price per "
-        "trading day from data.gov.in. This dashboard only reads those saved files and **never calls the API**, "
-        "so it works even when the API is down. Prediction is **price-only** (no live news is collected)."
-    )
+    # st.info(
+    #     "**How this tab works:** a scheduled collector (`src/live_pipeline.py collect`) saves one price per "
+    #     "trading day from data.gov.in. This dashboard only reads those saved files and **never calls the API**, "
+    #     "so it works even when the API is down. Prediction is **price-only** (no live news is collected)."
+    # )
     if lp is None:
         st.error(f"Live module could not be loaded: {LIVE_IMPORT_ERROR}")
         return
@@ -222,9 +222,9 @@ def render_live(commodity, metadata):
     m3.metric("Last collector run", last_attempt)
     st.caption(f"Last collector result: **{status_text}**")
 
-    st.progress(min(n / need, 1.0))
-    st.caption(f"{min(n, need)} of {need} trading days collected - rolling features (7-day mean/std) need "
-               f"{need} recent days before a prediction is meaningful.")
+    # st.progress(min(n / need, 1.0))
+    # st.caption(f"{min(n, need)} of {need} trading days collected - rolling features (7-day mean/std) need "
+    #            f"{need} recent days before a prediction is meaningful.")
 
     if n >= 2:
         st.line_chart(hist.set_index("Arrival_Date")["price"])
