@@ -16,9 +16,10 @@ Output: data/interim/sentiment_daily.csv
 
 from pathlib import Path
 import pandas as pd
+from config import PROJECT_ROOT
 
-INPUT_PATH = Path(r"C:\Users\siddh\Desktop\PBL\data\interim\news_with_sentiment.csv")
-OUTPUT_PATH = Path(r"C:\Users\siddh\Desktop\PBL\data\interim\sentiment_daily.csv")
+INPUT_PATH = (PROJECT_ROOT / "data/interim/news_with_sentiment.csv")
+OUTPUT_PATH = (PROJECT_ROOT / "data/interim/sentiment_daily.csv")
 
 
 def aggregate_daily(df: pd.DataFrame) -> pd.DataFrame:

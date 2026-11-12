@@ -1887,13 +1887,420 @@ publish_date,headline_category,headline_text,commodity,sentiment_positive,sentim
 2022-05-06,city.indore,Increasing soyabean productivity will make Madhya Pradesh prosperous; says Gadkari,Soyabean,0.9441441297531128,0.041067078709602356,0.014788834378123283,positive,False
 2022-05-10,city.nashik,State to focus on increasing cotton; soybean production,Soyabean,0.74400794506073,0.23665982484817505,0.019332215189933777,positive,False
 2022-05-12,city.indore,Soyabean meal exports fall to 6-month low due to high prices,Soyabean,0.008755163289606571,0.01854199916124344,0.9727027416229248,negative,False
-2022-05-19,city.indore,New soyabean varieties developed for cultivation,Soyabean,0.21340258419513702,0.7764829993247986,0.010114443488419056,neutral,False
-2022-06-16,city.indore,Soyabean acreage may shrink as farmers switch to cotton,Soyabean,0.016323568299412727,0.03431101515889168,0.9493654370307922,negative,False
-2022-07-25,city.kolhapur,Kolhapur: Soyabean crops in Shirol may be infected by yellow mosaic,Soyabean,0.022159947082400322,0.13601107895374298,0.8418290019035339,negative,False
-2022-10-09,city.indore,Madhya Pradesh: Soyabean crop damage due to excess rain may hit quality,Soyabean,0.011094222776591778,0.029834963381290436,0.9590708613395691,negative,False
+2022-05-19,city.indore,New soyabean varieties developed for cultivation,Soyabean,0.2134026288986206,0.7764829993247986,0.010114447213709354,neutral,False
+2022-06-16,city.indore,Soyabean acreage may shrink as farmers switch to cotton,Soyabean,0.016323568299412727,0.034311000257730484,0.9493654370307922,negative,False
+2022-07-25,city.kolhapur,Kolhapur: Soyabean crops in Shirol may be infected by yellow mosaic,Soyabean,0.02215993031859398,0.13601095974445343,0.8418290615081787,negative,False
+2022-10-09,city.indore,Madhya Pradesh: Soyabean crop damage due to excess rain may hit quality,Soyabean,0.011094222776591778,0.02983495034277439,0.9590708613395691,negative,False
 2022-10-09,city.jaipur,Heavy damage to paddy; soybean & maize in Hadauti,Soyabean,0.031219370663166046,0.09225764870643616,0.8765230774879456,negative,False
-2023-01-16,city.indore,Soyabean meal exports from Madhya Pradesh up 64% than a year ago,Soyabean,0.9499982595443726,0.02718476392328739,0.022817041724920273,positive,False
-2023-03-20,city.indore,Soyabean exports up by 50% in Feb,Soyabean,0.9520439505577087,0.026034744456410408,0.021921247243881226,positive,False
-2023-04-16,city.indore,Country's soybean output rises 4% in kharif 2022,Soyabean,0.9420168995857239,0.03573602810502052,0.022247113287448883,positive,False
-2023-05-07,business.india-business,Prices of imported soybean; sunflower oils fall by 46-57%,Soyabean,0.010902204550802708,0.023708675056695938,0.9653891324996948,negative,False
-2023-06-19,city.indore,IISR develops 3 soyabean varieties,Soyabean,0.16781292855739594,0.82375168800354,0.008435404859483242,neutral,False
+2023-01-16,city.indore,Soyabean meal exports from Madhya Pradesh up 64% than a year ago,Soyabean,0.9499982595443726,0.02718476392328739,0.022817036136984825,positive,False
+2023-03-20,city.indore,Soyabean exports up by 50% in Feb,Soyabean,0.9520439505577087,0.02603473700582981,0.021921250969171524,positive,False
+2023-04-16,city.indore,Country's soybean output rises 4% in kharif 2022,Soyabean,0.9420168995857239,0.03573602810502052,0.022247102111577988,positive,False
+2023-05-07,business.india-business,Prices of imported soybean; sunflower oils fall by 46-57%,Soyabean,0.010902204550802708,0.02370866760611534,0.9653891324996948,negative,False
+2023-06-19,city.indore,IISR develops 3 soyabean varieties,Soyabean,0.16781282424926758,0.8237518072128296,0.008435402065515518,neutral,False
+2013-07-15,business.india-business,Free trade wars: Sony's FTA edge turns LG; Samsung; Videocon into pout potatoes,Potato,0.04960701987147331,0.3124352693557739,0.6379576325416565,negative,False
+2013-09-14,city.chandigarh,Lahaul ditches potato; goes for apple; vegetable farming,Potato,0.05439648777246475,0.9109688997268677,0.0346345454454422,neutral,False
+2013-09-27,home.science,TomTato: A plant that grows both potatoes; tomatoes,Potato,0.033680424094200134,0.9464691281318665,0.019850479438900948,neutral,False
+2013-10-10,city.coimbatore,300 acres of potato fields damaged near Ooty due to heavy hailstorm,Potato,0.010107249952852726,0.02739824540913105,0.9624944925308228,negative,False
+2013-10-16,city.mumbai,Onion; potato prices on an upward spiral again,Potato,0.11080800741910934,0.6841225028038025,0.20506951212882996,neutral,False
+2013-10-24,india,Now; potato prices on the up,Potato,0.25755438208580017,0.6539139151573181,0.08853165060281754,neutral,False
+2013-10-24,city.delhi,Potato prices up across Delhi despite dip in bulk rates,Potato,0.04347642883658409,0.03740986809134483,0.9191136956214905,negative,True
+2013-10-26,city.kolkata,Potato goes the onion way; govt freezes price,Potato,0.05633868649601936,0.6793127655982971,0.2643485367298126,neutral,False
+2013-11-01,city.noida,Onion costs less; potato and tomato prices go up,Potato,0.07887667417526245,0.21878443658351898,0.7023388147354126,negative,True
+2013-11-01,city.nagpur,After onion; now potato turns pricey,Potato,0.07240580767393112,0.876814603805542,0.05077958479523659,neutral,False
+2013-11-02,city.ranchi,After onion; potato prices on festive rally,Potato,0.10627036541700363,0.8609792590141296,0.032750360667705536,neutral,False
+2013-11-03,city.kolkata,Potato woes as truckloads stranded on border,Potato,0.026642221957445145,0.05197020620107651,0.9213876724243164,negative,False
+2013-11-04,city.kolkata,Price rise triggers potato smuggling,Potato,0.06465353071689606,0.13666784763336182,0.7986786365509033,negative,False
+2013-11-05,city.bhubaneswar,Poor supply hikes potato price,Potato,0.20609842240810394,0.13232454657554626,0.661577045917511,negative,False
+2013-11-05,city.kolkata,Potato vanishes from Kolkata markets,Potato,0.02477719448506832,0.4294615387916565,0.5457613468170166,negative,False
+2013-11-06,city.bhubaneswar,State urges West Bengal to resume potato supply,Potato,0.12824147939682007,0.8162269592285156,0.055531539022922516,neutral,False
+2013-11-06,city.kolkata,Kolkata Municipal Corporation's potato drive fails quality; quantity tests,Potato,0.03779429942369461,0.741807222366333,0.22039854526519775,neutral,False
+2013-11-07,city.bhubaneswar,Small potatoes at 10/kg in Cuttack,Potato,0.07394254207611084,0.824291467666626,0.10176606476306915,neutral,False
+2013-11-08,city.bhubaneswar,Potato crisis continues; trucks seized in Bhubaneswar,Potato,0.010276759043335915,0.026505306363105774,0.9632179141044617,negative,False
+2013-11-09,city.bhubaneswar,Potatoes vanish from markets,Potato,0.03118954226374626,0.8294363021850586,0.13937416672706604,neutral,False
+2013-11-09,city.kolhapur,After onion; potato prices skyrocket with falling supplies,Potato,0.010062705725431442,0.024780459702014923,0.9651569128036499,negative,False
+2013-11-09,city.pune,Now; tomato & potato rates skyrocket,Potato,0.037041980773210526,0.17573058605194092,0.7872275114059448,negative,False
+2013-11-10,city.bhubaneswar,Potato scarcity to persist,Potato,0.041819240897893906,0.3153107762336731,0.6428700089454651,negative,False
+2013-11-11,india,Jharkhand CM cautions Bengal govt on potato supply,Potato,0.06006697937846184,0.18077418208122253,0.7591588497161865,negative,False
+2013-11-11,city.ranchi,CM cautions Bengal govt over ban on potato supply,Potato,0.04256151244044304,0.15271292626857758,0.8047255277633667,negative,False
+2013-11-11,city.bhubaneswar,Potato high price: No relief yet,Potato,0.21406866610050201,0.6599016785621643,0.1260296255350113,neutral,False
+2013-11-11,city.bhubaneswar,Potato sold under cop guard,Potato,0.05421365424990654,0.9258056879043579,0.019980616867542267,neutral,False
+2013-11-12,city.ranchi,CMO U-turn on potato issue,Potato,0.018450679257512093,0.9118104577064514,0.06973880529403687,neutral,False
+2013-11-12,city.kolkata,Potatoes cheaper at swanky malls,Potato,0.134740948677063,0.8413555026054382,0.023903511464595795,neutral,False
+2013-11-13,city.ranchi,Agriculture minister seeks Sharad Pawar's help to handle 'boiling' potato,Potato,0.13143323361873627,0.838123083114624,0.030443677678704262,neutral,False
+2013-11-13,india,No let-up in prices of onion; potato; tomato,Potato,0.09978483617305756,0.8785886168479919,0.021626535803079605,neutral,False
+2013-11-13,city.bhubaneswar,Potato crisis to continue in Odisha,Potato,0.028062574565410614,0.15233829617500305,0.8195990920066833,negative,False
+2013-11-14,city.kolkata,West Bengal potato traders seek police watch,Potato,0.039310358464717865,0.5444019436836243,0.41628772020339966,neutral,False
+2013-11-14,city.ranchi,Govt blamed for potato crisis,Potato,0.023174114525318146,0.14670014381408691,0.8301256895065308,negative,False
+2013-11-15,city.ranchi,Potato prices to ease as supply starts,Potato,0.9063787460327148,0.07010999321937561,0.023511182516813278,positive,False
+2013-11-16,city.guwahati,Potato crisis: TMC leader resigns for Mamata stand,Potato,0.0114136328920722,0.08076216280460358,0.9078242182731628,negative,False
+2013-11-18,city.kolkata,Cops 'attacked' over potato row in Malda,Potato,0.02779812179505825,0.06687085330486298,0.905331015586853,negative,False
+2013-11-19,city.bhubaneswar,Potato trucks arrive in Odisha,Potato,0.06482773274183273,0.8841400146484375,0.05103226378560066,neutral,False
+2013-11-20,city.ranchi,Potato prices slashed to Rs 18/kg,Potato,0.18454386293888092,0.09701643139123917,0.7184396982192993,negative,False
+2013-11-26,india,Calcutta high court stays Bengal's potato clamp-down order,Potato,0.04561467468738556,0.08706539124250412,0.8673200011253357,negative,False
+2013-12-03,city.delhi,Onion; potato prices in Delhi go down,Potato,0.024611808359622955,0.07495564967393875,0.9004325866699219,negative,False
+2013-12-03,assembly-elections-2013.delhi-assembly-elections,Onion; potato prices in Delhi go down,Potato,0.024611808359622955,0.07495564967393875,0.9004325866699219,negative,False
+2013-12-25,india,1200 tons of apples and potatoes rot in Uttarkhand,Potato,0.020190656185150146,0.31855249404907227,0.6612567901611328,negative,False
+2014-01-05,city.kanpur,CSA recommends ways to protect potato,Potato,0.07168859243392944,0.9125582575798035,0.015753163024783134,neutral,False
+2014-02-17,city.kanpur,Unseasonal rainfall to hit potato production,Potato,0.041964951902627945,0.09963229298591614,0.8584027886390686,negative,False
+2014-02-28,city.rajkot,Potato farmers reap high returns in north Gujarat,Potato,0.9248335957527161,0.059924740344285965,0.015241668559610844,positive,False
+2014-03-02,city.rajkot,Potato prices continue to spiral,Potato,0.1023244634270668,0.06676043570041656,0.8309151530265808,negative,False
+2014-03-02,city.rajkot,Potato took Gujarat route to India,Potato,0.11961442232131958,0.8516942858695984,0.02869122102856636,neutral,False
+2014-04-20,city.bhubaneswar,Onion and potato get dearer due to short supply,Potato,0.01680399850010872,0.08629152923822403,0.8969045281410217,negative,False
+2014-04-23,city.bhubaneswar,Administration conducts raids; sells potato at fair price shops,Potato,0.028696764260530472,0.9296413064002991,0.04166195169091225,neutral,False
+2014-04-28,city.kolkata,SIT glare on Rs 100 crore 'potato scheme' scam,Potato,0.05584501475095749,0.40652939677238464,0.5376256108283997,negative,False
+2014-05-05,life-style.home-garden,How to grow potatoes,Potato,0.04377792775630951,0.9211459159851074,0.035076115280389786,neutral,False
+2014-05-28,india,Rising potato; onion and milk prices worry for Modi govt,Potato,0.022724466398358345,0.052394431084394455,0.924881100654602,negative,False
+2014-07-03,business.india-business,Food inflation: Of onion tears and potato fears,Potato,0.02316337823867798,0.5721387267112732,0.40469789505004883,neutral,False
+2014-07-03,india,Onion; potato now essential items; stocks to be capped,Potato,0.05239660292863846,0.9247283935546875,0.02287496067583561,neutral,False
+2014-07-04,city.patna,Onion; potato should be sold at milk outlets,Potato,0.03491481393575668,0.9413996338844299,0.023685533553361893,neutral,False
+2014-07-04,city.chandigarh,Prices of onion; potato surge in Amritsar as buyers panic,Potato,0.07017832249403,0.40846696496009827,0.5213546752929688,negative,True
+2014-07-05,india,Govt mulls potato import in case prices spike,Potato,0.050328273326158524,0.48036789894104004,0.46930384635925293,neutral,False
+2014-07-06,city.bhubaneswar,Onion; potato become essential commodities,Potato,0.12488003820180893,0.8572592735290527,0.01786063238978386,neutral,False
+2014-07-11,city.ahmedabad,Onion; potato under EC Act,Potato,0.027215147390961647,0.9265446066856384,0.04624021798372269,neutral,False
+2014-07-16,city.guwahati,Potatoes from Bengal arrive; Guwahati relieved,Potato,0.4838915169239044,0.48383259773254395,0.032275911420583725,positive,False
+2014-07-24,city.bengaluru,No check on hoarders as onion; potato prices rise,Potato,0.09161502122879028,0.7898162007331848,0.11856881529092789,neutral,False
+2014-07-27,city.delhi,Delhi govt planning to use liquor outlets to sell onions; potatoes,Potato,0.1387113481760025,0.85033118724823,0.010957511141896248,neutral,False
+2014-08-08,city.bhubaneswar,Odisha seeks potato supply from Nafed as WB restricts supply,Potato,0.14082200825214386,0.5596593618392944,0.2995185852050781,neutral,False
+2014-08-09,city.kolkata,Potato stocks may dry up,Potato,0.013380516320466995,0.025340087711811066,0.9612794518470764,negative,False
+2014-08-09,city.lucknow,Potato prices shoot up; experts blame hoarding,Potato,0.03807073459029198,0.02232605591416359,0.9396031498908997,negative,False
+2014-08-09,city.bhubaneswar,Potatoes vanish from mkts as Bengal ban enters Day 3,Potato,0.025150520727038383,0.4890042543411255,0.4858451783657074,neutral,False
+2014-08-09,city.bhubaneswar,Delhi warned of potato crisis in May,Potato,0.035479672253131866,0.05361630767583847,0.9109039902687073,negative,False
+2014-08-10,business.india-business,State bid to check potato price rise,Potato,0.09801185131072998,0.8026888966560364,0.09929924458265305,neutral,False
+2014-08-10,city.bhubaneswar,Potato crisis over; trucks start plying,Potato,0.14698895812034607,0.5888962149620056,0.2641148269176483,neutral,False
+2014-08-11,city.kolkata,Potato crisis may spur price rise in West Bengal,Potato,0.11838476359844208,0.10322650521993637,0.7783887386322021,negative,True
+2014-08-11,city.bhubaneswar,Potato crisis: Odisha government taken for a ride,Potato,0.06622270494699478,0.6395362019538879,0.2942411005496979,neutral,False
+2014-08-12,city.kolkata,Potatoes selling cheaper at supermarts,Potato,0.2996940612792969,0.6743112802505493,0.025994671508669853,neutral,False
+2014-08-12,india,Government sat on potato stock,Potato,0.04461953043937683,0.8421292901039124,0.11325116455554962,neutral,False
+2014-08-13,city.kolkata,KMC officials sell potatoes at fair-price shops,Potato,0.05414031073451042,0.9301713705062866,0.0156883355230093,neutral,False
+2014-08-13,city.bhubaneswar,Potato crisis far from over,Potato,0.11762870103120804,0.5797451734542847,0.3026261627674103,neutral,False
+2014-08-15,city.visakhapatnam,Potato pangs hit Port City,Potato,0.14219334721565247,0.19151520729064941,0.6662914752960205,negative,False
+2014-08-16,city.visakhapatnam,Potato pangs hit Port City,Potato,0.14219334721565247,0.19151520729064941,0.6662914752960205,negative,False
+2014-08-16,india,West Bengal to send potatoes to Orissa and Jharkhand for seven days,Potato,0.06785847991704941,0.9125133156776428,0.019628243520855904,neutral,False
+2014-08-17,city.guwahati,West Bengal's potato ban pinches city pockets,Potato,0.01773275062441826,0.06080714613199234,0.9214600920677185,negative,False
+2014-08-18,city.bhubaneswar,126 truckloads of potato reach Odisha,Potato,0.22487953305244446,0.7482708692550659,0.02684958651661873,neutral,False
+2014-08-25,city.bhubaneswar,West Bengal stops potato supply again,Potato,0.01711699180305004,0.14582081139087677,0.8370621204376221,negative,False
+2014-08-29,city.kolkata,Potato prices may go up ahead of strike,Potato,0.03619999438524246,0.08691798150539398,0.8768820762634277,negative,True
+2014-09-01,city.bhubaneswar,Stir to fuel potato crisis,Potato,0.0711543932557106,0.9004518985748291,0.028393659740686417,neutral,False
+2014-09-02,life-style.food.recipes,Roast chicken with potatoes and veggies,Potato,0.033192817121744156,0.9158223867416382,0.050984807312488556,neutral,False
+2014-09-02,city.bhubaneswar,Odisha eyes doubling its potato yield,Potato,0.34656059741973877,0.4373420476913452,0.21609733998775482,neutral,False
+2014-09-08,city.ahmedabad,State tops in onion; potato output,Potato,0.5538921356201172,0.40293240547180176,0.04317541792988777,positive,False
+2014-09-10,city.guwahati,Potato prices will withstand Bengal ban; says government,Potato,0.817842423915863,0.16793659329414368,0.014221039600670338,positive,False
+2014-09-11,city.bhubaneswar,Potato sale through PDS resumes; crisis continues,Potato,0.028312010690569878,0.22908800840377808,0.7426000237464905,negative,False
+2014-09-12,city.kolkata,CM gives time; potato strike lifted,Potato,0.0643637403845787,0.7073001265525818,0.22833609580993652,neutral,False
+2014-09-13,city.bhubaneswar,Potato output to be doubled in 2015,Potato,0.86907958984375,0.12135902792215347,0.009561333805322647,positive,False
+2014-09-16,city.bhubaneswar,Odisha Govt claims potato stocks adequate; but prices still high,Potato,0.8564469814300537,0.025403300300240517,0.11814972758293152,positive,False
+2014-09-22,india,Soaring potato prices give Centre headache,Potato,0.5028609037399292,0.12083611637353897,0.3763029873371124,positive,False
+2014-09-22,unknown,Why sitting down can be deadly for you; office potatoes must take a walk,Potato,0.023589836433529854,0.6355831623077393,0.34082701802253723,neutral,False
+2014-09-22,blogs,TOI Edit: Why sitting down can be deadly for you; office potatoes must take a walk,Potato,0.02244596555829048,0.6523144245147705,0.3252396583557129,neutral,False
+2014-09-25,city.bhubaneswar,No immediate solution to potato crisis: Panel,Potato,0.06175228953361511,0.8818461298942566,0.05640155076980591,neutral,False
+2014-09-28,unknown,Recipe: Horseradish Potato Cakes,Potato,0.030584588646888733,0.9366832375526428,0.032732222229242325,neutral,False
+2014-10-07,city.nagpur,Politics over potatoes strains kitchen budget,Potato,0.017347317188978195,0.11509649455547333,0.8675562739372253,negative,False
+2014-10-11,city.bhubaneswar,No more panic buying; potato demand drops,Potato,0.19647657871246338,0.7714746594429016,0.03204883635044098,neutral,False
+2014-10-15,unknown,How to Make Potato Roasty,Potato,0.0451381653547287,0.9245442152023315,0.0303176362067461,neutral,False
+2014-10-19,city.chandigarh,Rana Gurjeet opposes Centre's decision to import potatoes,Potato,0.05627986043691635,0.45962846279144287,0.4840916395187378,negative,False
+2014-10-28,city.kanpur,CM encourages potato growers; reminisces 'Dekha ek khwab',Potato,0.12841175496578217,0.8560619950294495,0.015526281669735909,neutral,False
+2014-10-29,india,Potato chips are the favourite snack of GRE aspirants in India: Survey,Potato,0.04689938202500343,0.9293181300163269,0.023782512173056602,neutral,False
+2014-10-30,home.education,Indians studying for GRE love potato chips: Study,Potato,0.05161524564027786,0.9251776337623596,0.023207079619169235,neutral,False
+2014-11-02,india,Lahaul farmers losing interest in seed potato cultivation,Potato,0.020040348172187805,0.13907529413700104,0.8408843874931335,negative,False
+2014-11-07,city.bhubaneswar,State bid to boost potato production,Potato,0.9117423892021179,0.07376708835363388,0.014490567147731781,positive,False
+2014-11-12,life-style.food.recipes,Recipe: Potato rosti,Potato,0.03653410077095032,0.9246535897254944,0.038812316954135895,neutral,False
+2014-11-18,blogs,Bikram Vohra: Saga of the potato cutlet,Potato,0.049742620438337326,0.9058346748352051,0.04442267864942551,neutral,False
+2014-11-23,city.chandigarh,Automatic harvesting machine for potato farmers,Potato,0.04846779629588127,0.9338975548744202,0.017634596675634384,neutral,False
+2014-12-01,city.bhubaneswar,Buffer potato stock to meet shortfall,Potato,0.22229355573654175,0.7644253373146057,0.013281109742820263,neutral,False
+2014-12-11,home.science,Potato can help you control weight,Potato,0.08353158086538315,0.8991873860359192,0.017281044274568558,neutral,False
+2014-12-18,life-style.food.recipes,Recipe: Potato cake with chilli jam,Potato,0.033073846250772476,0.9302771091461182,0.03664911538362503,neutral,False
+2015-01-11,life-style.food.recipes,Recipe: Pork chops with slaw; mashed potatoes,Potato,0.039854008704423904,0.9153156280517578,0.04483034834265709,neutral,False
+2015-01-12,life-style.food.recipes,Recipe: Stuffed potatoes,Potato,0.03786662966012955,0.9216538667678833,0.040479473769664764,neutral,False
+2015-01-19,life-style.food.recipes,Mash potatoes the way mom makes it,Potato,0.03962969407439232,0.9194364547729492,0.040933892130851746,neutral,False
+2015-02-21,city.chandigarh,Rains worry potato growers; crops damaged at few places,Potato,0.010774224065244198,0.030977396294474602,0.9582483768463135,negative,False
+2015-03-06,city.kolkata,Government to give subsidy to traders to export potatoes,Potato,0.22412574291229248,0.760777473449707,0.015096781775355339,neutral,False
+2015-03-11,city.rajkot,Deesa farmers face potato glut,Potato,0.013470582664012909,0.05108862370252609,0.9354407787322998,negative,False
+2015-03-14,city.kolkata,Potato farmer suicides: HC seeks report,Potato,0.02218620479106903,0.5819907784461975,0.39582300186157227,neutral,False
+2015-03-16,city.kolkata,Another potato farmer kills self,Potato,0.017683766782283783,0.1309477984905243,0.8513684272766113,negative,False
+2015-03-16,india,Govt to stock up on onion; potato to tame price rise,Potato,0.01339670643210411,0.35434624552726746,0.6322570443153381,negative,True
+2015-03-18,city.ahmedabad,Sops for exporting potatoes,Potato,0.058907900005578995,0.9256371259689331,0.015454919077455997,neutral,False
+2015-03-21,city.kolkata,Another potato farmer kills self in Khondoghosh,Potato,0.02033529058098793,0.11359822750091553,0.8660664558410645,negative,False
+2015-03-22,unknown,How to make microwave potato chips,Potato,0.04444306343793869,0.9300445318222046,0.02551238425076008,neutral,False
+2015-03-23,city.bhubaneswar,Problem of plenty leads to distress sale of potato,Potato,0.026966845616698265,0.5515002012252808,0.42153292894363403,neutral,False
+2015-03-24,city.bhubaneswar,Potato keeps House on boil,Potato,0.06339696794748306,0.8924276232719421,0.04417538642883301,neutral,False
+2015-03-25,city.kolkata,High court rap for state's potato policy,Potato,0.16695688664913177,0.43099334836006165,0.40204980969429016,neutral,False
+2015-03-26,india,Potato glut and price slump drive 8 farmers to commit suicide in Bengal,Potato,0.01027827337384224,0.0367840938270092,0.9529376029968262,negative,False
+2015-03-28,city.nashik,Centre okays price stability fund for onions; potatoes,Potato,0.14888933300971985,0.8396388292312622,0.011471805162727833,neutral,False
+2015-03-30,city.kolkata,BJP leaders heckled over potato posers,Potato,0.02332165837287903,0.1150643602013588,0.861613929271698,negative,False
+2015-03-30,india,Potato prices crash; Rampura farmers look for cold storage,Potato,0.011711514554917812,0.039314620196819305,0.9489738345146179,negative,False
+2015-04-05,city.kolkata,Engineer kills self over loss in potato farming,Potato,0.04030594229698181,0.7489733695983887,0.21072065830230713,neutral,False
+2015-04-05,city.kolkata,Engineer-potato farmer kills self,Potato,0.0218666885048151,0.22253577411174774,0.7555975317955017,negative,False
+2015-04-09,videos,Potato farmers incur heavy losses due to untimely rains,Potato,0.010131807066500187,0.025096846744418144,0.9647713899612427,negative,False
+2015-04-24,city.lucknow,Potato shines amid agri gloom; surges to record production,Potato,0.9322311282157898,0.047310709953308105,0.02045813761651516,positive,False
+2015-04-24,india,Bumper potato crop a worry for Bengal; Mamata writes to Arun Jaitley for help,Potato,0.0989740714430809,0.7914275527000427,0.10959837585687637,neutral,False
+2015-04-29,odisha,Potato mission gets govt nod,Potato,0.5166733860969543,0.4548494517803192,0.02847721427679062,positive,False
+2015-05-01,entertainment.english.music.news,Don't beat yourself up if you eat a potato chip: JLo,Potato,0.0486181266605854,0.783178448677063,0.16820339858531952,neutral,False
+2015-05-14,life-style.food.quick-food,How to make microwave potato chips,Potato,0.04444306343793869,0.9300445318222046,0.02551238425076008,neutral,False
+2015-05-14,city.chandigarh,Farmer ends life after suffering huge losses in potato; wheat crops,Potato,0.022972792387008667,0.17251431941986084,0.8045128583908081,negative,False
+2015-05-20,life-style.food.recipes,Recipe: Roast chicken; beans & mashed potatoes,Potato,0.03577639162540436,0.9346263408660889,0.02959728054702282,neutral,False
+2015-07-09,city.navimumbai,10 years on; APMC onion-potato market remains 'dangerous',Potato,0.01236358005553484,0.025379931554198265,0.9622565507888794,negative,False
+2015-07-11,life-style.food.recipes,5 healthy alternatives to potato chips,Potato,0.22229304909706116,0.7669788599014282,0.010728135704994202,neutral,False
+2015-07-14,life-style.food.food-features,5 delicious roasted potato recipes,Potato,0.0764819011092186,0.8975262641906738,0.025991829112172127,neutral,False
+2015-07-14,unknown,5 delicious roasted potato recipes,Potato,0.0764819011092186,0.8975262641906738,0.025991829112172127,neutral,False
+2015-07-15,life-style.food.quick-food,Microwave potato chips recipe,Potato,0.03783461079001427,0.9293713569641113,0.03279409185051918,neutral,False
+2015-07-29,city.nagpur,Onion rates bring tears; potatoes some cheer,Potato,0.07218430936336517,0.8984103202819824,0.029405362904071808,neutral,False
+2015-08-02,city.hubballi,Shortage of water pushes potato grower over the edge,Potato,0.014425812289118767,0.042600277811288834,0.9429739117622375,negative,False
+2015-08-25,india,As onion prices soar; potato and tomato prices crash,Potato,0.11548899859189987,0.8302449584007263,0.0542660653591156,neutral,False
+2015-09-15,city.chandigarh,Cauliflower takes over world-class seed potato in state's cold desert,Potato,0.11362335085868835,0.8664242029190063,0.019952494651079178,neutral,False
+2015-09-20,unknown,Recipes: Delicious Potato Dishes,Potato,0.0735199972987175,0.9067614674568176,0.0197185967117548,neutral,False
+2015-10-20,city.kolkata,Dip in potato price robs the puja sheen in Hooghly,Potato,0.041078150272369385,0.05727973207831383,0.9016421437263489,negative,False
+2015-11-15,city.ahmedabad,Reds are coming to oust potatoes,Potato,0.17659194767475128,0.7012847661972046,0.12212327122688293,neutral,False
+2015-11-17,life-style.health-fitness.diet,Potato roasties; dark toasties can give you cancer,Potato,0.04383663088083267,0.9339302182197571,0.02223314717411995,neutral,False
+2015-11-25,city.bhubaneswar,K'pada potato growers want subsidized seeds,Potato,0.10798197984695435,0.8777186274528503,0.014299429021775723,neutral,False
+2015-11-30,life-style.health-fitness.diet,Cauliflower; potatoes; onions cut stomach cancer risk,Potato,0.07329358160495758,0.8854126334190369,0.041293784976005554,neutral,False
+2015-12-02,life-style.food.recipes,Potato fritter recipe on World Fritters Day,Potato,0.05860741809010506,0.9198833703994751,0.02150915190577507,neutral,False
+2015-12-05,city.ludhiana,PAU warns farmers of fungus outbreak in potato; pea crops,Potato,0.019534612074494362,0.14371229708194733,0.8367531299591064,negative,False
+2015-12-08,city.chennai,Potatoes going for Rs 100 a kilo; mutton Rs 600,Potato,0.07372894138097763,0.9079576730728149,0.01831335388123989,neutral,False
+2015-12-21,city.chandigarh,Farmers plough potato crop under virus attack,Potato,0.030425455421209335,0.403158962726593,0.566415548324585,negative,False
+2015-12-23,home.science,Potatoes to be grown on Earth under Mars-like conditions,Potato,0.05448687821626663,0.929976761341095,0.015536305494606495,neutral,False
+2016-01-10,city.bhubaneswar,Govt expects 3.5 lakh MT potato yield this season,Potato,0.1430363655090332,0.8413108587265015,0.015652725473046303,neutral,False
+2016-01-25,world.uk,Businessman buys photograph of a potato for 1m,Potato,0.06917000561952591,0.9098647236824036,0.020965253934264183,neutral,False
+2016-01-26,city.bhubaneswar,Pact to boost seed potato output on cards,Potato,0.8290764689445496,0.15998412668704987,0.010939357802271843,positive,False
+2016-02-16,home.science,Poisonous flower fossil of potato-tomato family found frozen in amber,Potato,0.034242987632751465,0.6270064115524292,0.33875057101249695,neutral,False
+2016-02-20,home.science,Nasa to simulate growing potatoes on Mars,Potato,0.0704331174492836,0.9144358038902283,0.015131074003875256,neutral,False
+2016-02-20,life-style.health-fitness.diet,Eating potatoes ups potassium; fibre in kids,Potato,0.13349415361881256,0.8409631252288818,0.025542685762047768,neutral,False
+2016-02-22,life-style.relationships.parenting,Eating potatoes ups potassium; fibre in kids,Potato,0.13349415361881256,0.8409631252288818,0.025542685762047768,neutral,False
+2016-03-09,city.bhubaneswar,State govt draws ire over potato prices,Potato,0.021166665479540825,0.043399859219789505,0.9354334473609924,negative,False
+2016-03-10,city.bhubaneswar,Govt fair price shops likely to sell potatoes,Potato,0.13413836061954498,0.7893697619438171,0.07649186253547668,neutral,False
+2016-03-13,city.bhubaneswar,Rift in BJD adds to potato crisis in state,Potato,0.01513978186994791,0.026559583842754364,0.9583005905151367,negative,False
+2016-03-15,city.bhubaneswar,Price rise: Govt not to procure more potatoes,Potato,0.06465781480073929,0.07139325886964798,0.8639489412307739,negative,False
+2016-03-17,life-style.food.food-features,Have you tried potato pickle yet?,Potato,0.042523086071014404,0.8850363492965698,0.07244060933589935,neutral,False
+2016-03-22,city.bhubaneswar,Potato growers forced to make distress sale,Potato,0.014729293063282967,0.07618824392557144,0.9090825319290161,negative,False
+2016-03-30,life-style.beauty,Potatoes; tomatoes help in keeping sweat at bay,Potato,0.07723250240087509,0.8949174284934998,0.02785007283091545,neutral,False
+2016-04-01,city.visakhapatnam,PepsiCo to help AP grow potatoes in Vizag,Potato,0.2192373275756836,0.7724329829216003,0.008329746313393116,neutral,False
+2016-04-10,city.ahmedabad,Gujarat farmers benefit as potato output dips in other states,Potato,0.04232299327850342,0.021663658320903778,0.936013400554657,negative,False
+2016-04-10,india,Gujarat farmers benefit as potato output dips in other states,Potato,0.04232299327850342,0.021663658320903778,0.936013400554657,negative,False
+2016-04-21,city.nagpur,Bulk rate of onion down to 5-7/kg; potato rising,Potato,0.011192632839083672,0.022235888987779617,0.9665714502334595,negative,False
+2016-04-21,city.bhubaneswar,Memorandum of Understanding to produce quality potato seeds,Potato,0.7566495537757874,0.23601607978343964,0.007334394846111536,positive,False
+2016-05-03,city.ranchi,Bokaro potato trader released by kidnappers,Potato,0.04909782111644745,0.16771921515464783,0.7831829190254211,negative,False
+2016-06-17,india,Triple whammy as dal; tomato & potato prices surge together,Potato,0.35013535618782043,0.11309463530778885,0.5367699861526489,negative,True
+2016-07-03,city.delhi,Govt to identify pest-free potato zones to boost exports,Potato,0.8375548720359802,0.15016472339630127,0.012280365452170372,positive,False
+2016-07-13,city.nagpur,Kalamna strike makes potatoes and onions costly,Potato,0.03910927101969719,0.9345415234565735,0.026349207386374474,neutral,False
+2016-09-02,city.guwahati,1 lakh quintal of potato seized,Potato,0.10243673622608185,0.8807085752487183,0.01685470901429653,neutral,False
+2016-10-01,city.bengaluru,Onion; potato growers shed tears as prices plunge,Potato,0.03085286356508732,0.08478289842605591,0.8843642473220825,negative,False
+2016-10-11,city.agra,Delay in distribution of potato seeds in the district,Potato,0.011156240478157997,0.08141816407442093,0.907425582408905,negative,False
+2016-11-14,city.kolkata,After temporary relief; potato set to pinch again,Potato,0.34608107805252075,0.11436498910188675,0.5395538806915283,negative,False
+2016-11-22,city.kolkata,Government plans big; but cash worry hits potato farming,Potato,0.06693959981203079,0.0674908459186554,0.865569531917572,negative,False
+2016-11-25,city.kolkata,Potato farmers in lurch as supply chain sputters,Potato,0.01243766862899065,0.04960322380065918,0.9379590749740601,negative,False
+2016-11-30,city.lucknow,BKU to give away free potatoes; paddy,Potato,0.05872005596756935,0.9215282201766968,0.019751669839024544,neutral,False
+2016-12-01,city.lucknow,Farmers convey anger against cash crunch by distributing free potatoes,Potato,0.08446574956178665,0.5836228132247925,0.3319114148616791,neutral,False
+2016-12-08,city.ahmedabad,Gujarat farmers expect bumper potato crop,Potato,0.10808096826076508,0.24531930685043335,0.6465997099876404,negative,False
+2016-12-08,city.indore,Sowing area of potato; garlic increases this rabi season,Potato,0.7393578290939331,0.2423364669084549,0.018305720761418343,positive,False
+2016-12-11,city.guwahati,Farmers forced to sell potato at 1 per kilo,Potato,0.013106119818985462,0.11358609795570374,0.8733077049255371,negative,False
+2016-12-12,city.ahmedabad,Potato prices drop as cold storages clear stock,Potato,0.01086973212659359,0.02078062854707241,0.9683496952056885,negative,False
+2016-12-15,city.ahmedabad,Gujarat set to receive potato; coriander bounty,Potato,0.1427011936903,0.8449234366416931,0.0123753035441041,neutral,False
+2016-12-17,city.indore,Potato prices hit rock bottom despite increase in demand,Potato,0.29638350009918213,0.0249705221503973,0.67864590883255,negative,False
+2016-12-20,city.rajkot,Glut forces Deesa farmers to bury potatoes,Potato,0.01943228393793106,0.288178414106369,0.6923893094062805,negative,False
+2016-12-21,city.kolkata,Distress sale by potato hoarders as stocks arrive,Potato,0.07590106129646301,0.7826540470123291,0.14144490659236908,neutral,False
+2016-12-30,city.ahmedabad,Ahmedabad: Potato farming at an all time high,Potato,0.6406042575836182,0.3460245430469513,0.013371196575462818,positive,False
+2017-01-24,city.rajkot,Government announces sops for tomato; potato farmers,Potato,0.08928182721138,0.805324375629425,0.10539381951093674,neutral,False
+2017-01-24,city.ahmedabad,Potatoes; tomatoes fetch peanuts with glut; few buyers,Potato,0.05815722420811653,0.8792948126792908,0.0625479593873024,neutral,False
+2017-01-27,city.hyderabad,One in seven couch-potato kids in Hyderabad suffer from high BP: Study,Potato,0.03010757640004158,0.2667611539363861,0.7031313180923462,negative,False
+2017-02-17,city.chandigarh,Despite good yield; potato growers stare at losses,Potato,0.03101653791964054,0.0437949113547802,0.9251886010169983,negative,False
+2017-02-25,city.chandigarh,Reeling under price crash; Bathinda potato growers face high storage rates,Potato,0.012066124938428402,0.02253931388258934,0.9653945565223694,negative,False
+2017-02-28,city.kolkata,From farm to market; potato price jumps 5 times in 60km,Potato,0.043363187462091446,0.19188371300697327,0.7647531032562256,negative,True
+2017-03-01,city.chandigarh,Farmers throw potatoes on National Highway,Potato,0.035181812942028046,0.6373279094696045,0.3274902403354645,neutral,False
+2017-03-05,city.kolkata,Food giant turns saviour for state potato farmers,Potato,0.1527555137872696,0.8280994296073914,0.019145065918564796,neutral,False
+2017-03-05,city.amritsar,Direct purchase of potatoes from farmers to ease crisis,Potato,0.7721559405326843,0.21481356024742126,0.01303049735724926,positive,False
+2017-03-08,city.chandigarh,Farmers protest distress sale of potatoes in Bathinda,Potato,0.016495084390044212,0.07933109998703003,0.9041737914085388,negative,False
+2017-03-09,city.chandigarh,Bathinda administration buys 700 qt of potatoes,Potato,0.1470477283000946,0.8425617814064026,0.010390491224825382,neutral,False
+2017-03-14,city.kolkata,Mamata likely to offer relief as low wholesale price hits potato farmers,Potato,0.8804036974906921,0.051045890897512436,0.06855038553476334,positive,False
+2017-03-15,city.kolkata,Mamata Banerjee announces MSP for potato; export subsidy,Potato,0.21516603231430054,0.762027382850647,0.022806530818343163,neutral,False
+2017-03-24,city.amritsar,Make chips; Tarn Taran administration to potato farmers,Potato,0.03765098750591278,0.9462073445320129,0.016141604632139206,neutral,False
+2017-03-26,city.indore,Cold storages stocked with potatoes,Potato,0.06704310327768326,0.909523606300354,0.023433269932866096,neutral,False
+2017-03-31,home.science,Farming on Mars? Potato shows way,Potato,0.05521971732378006,0.9166011214256287,0.028179191052913666,neutral,False
+2017-04-02,city.meerut,Potato farmers seeks MSP after prices plummet due to bumper crop,Potato,0.08687664568424225,0.036443471908569336,0.8766798973083496,negative,False
+2017-04-11,city.lucknow,Centre okays decision to procure 1 lakh MT potatoes from UP farmers,Potato,0.6592332124710083,0.3182818591594696,0.02248491160571575,positive,False
+2017-04-12,city.lucknow,In a first; UP govt to purchase potatoes from farmers directly,Potato,0.30753350257873535,0.6812173128128052,0.011249222792685032,neutral,False
+2017-04-19,business.india-business,India's potato output to hit near record level at 47mln tonnes,Potato,0.7918310761451721,0.17050930857658386,0.037659525871276855,positive,False
+2017-04-20,business.india-business,Yogi Adityanath govt plans to move bumper potato produce to high-price mandis,Potato,0.1917988359928131,0.7983348965644836,0.00986628420650959,neutral,False
+2017-04-29,city.agra,Processing unit for potatoes in Agra soon,Potato,0.04725637659430504,0.9274436235427856,0.025299983099102974,neutral,False
+2017-05-14,city.mumbai,No small potato: 107-yr-old Dadar eatery thrives on wadas,Potato,0.24223631620407104,0.7478045225143433,0.009959174320101738,neutral,False
+2017-05-14,city.meerut,Government centres not buying our potatoes despite CM's promise: Farmers,Potato,0.08678993582725525,0.8824872374534607,0.030722832307219505,neutral,False
+2017-05-22,life-style.health-fitness.diet,Are potatoes healthy?,Potato,0.1434011459350586,0.8278453946113586,0.028753431513905525,neutral,False
+2017-06-04,city.rajkot,Potato farmers jam NH-14,Potato,0.05543794110417366,0.8914631009101868,0.053098954260349274,neutral,False
+2017-06-04,life-style.health-fitness.diet,When potatoes turn unsafe to eat,Potato,0.026275821030139923,0.797497034072876,0.17622718214988708,neutral,False
+2017-06-10,city.chandigarh,Allow exports to Pak; demand Potato growers,Potato,0.5781033039093018,0.4115878641605377,0.010308842174708843,positive,False
+2017-06-10,city.chandigarh,Punjab's potato growers demand export to Pak; southern states,Potato,0.2768595814704895,0.7104300856590271,0.01271035335958004,neutral,False
+2017-06-12,city.allahabad,Potato seller's sons; who cycled 40km for classes; make it to IIT,Potato,0.1762794405221939,0.8143192529678345,0.009401309303939342,neutral,False
+2017-06-18,city.chandigarh,28% GST on farm implements will ruin potato industry,Potato,0.09856592863798141,0.6629648208618164,0.23846928775310516,neutral,False
+2017-06-20,city.agra,UP farmers in dilemma due to drop in price of potatoes,Potato,0.07185431569814682,0.032043084502220154,0.8961026072502136,negative,False
+2017-06-21,city.ahmedabad,Rs 100 crore subsidy announced for potato; onion farmers,Potato,0.17241749167442322,0.804471492767334,0.0231110081076622,neutral,False
+2017-07-15,city.agra,Nothing in budget for potato growers; say upset farmers,Potato,0.02639816328883171,0.32149967551231384,0.6521021127700806,negative,False
+2017-07-20,city.delhi,UP farmers give potatoes for free at price protest,Potato,0.06784134358167648,0.9102249145507812,0.02193373069167137,neutral,False
+2017-08-13,city.pune,Pests puncture production of potatoes,Potato,0.025317974388599396,0.421546071767807,0.5531359314918518,negative,False
+2017-09-12,city.chandigarh,Doaba's potato growers urge Centre to allow trade with Pakistan,Potato,0.5983648300170898,0.3782053589820862,0.023429865017533302,positive,False
+2017-09-20,city.chandigarh,Mashed potatoes bring 20 scooterists on their knees,Potato,0.06623338162899017,0.8935427665710449,0.0402238629758358,neutral,False
+2017-09-21,city.kolkata,Potato invasion: After a century; Kolkata defeats Awadh in biryani battle,Potato,0.14619359374046326,0.7764365673065186,0.07736984640359879,neutral,False
+2017-09-30,city.ahmedabad,Now; potatoes too will be utterly butterly delicious,Potato,0.07962610572576523,0.9005895256996155,0.019784364849328995,neutral,False
+2017-10-06,city.bareilly,Potato export scheme flops in UP,Potato,0.01766122691333294,0.07654006034135818,0.9057986736297607,negative,False
+2017-10-08,city.pune,30;000 metric tonnes of potatoes perished in September heavy rain,Potato,0.011782999150454998,0.04407268390059471,0.9441443085670471,negative,False
+2017-10-08,city.pune,Pune: 30k MT of kharif potatoes perish in September rain,Potato,0.01872214674949646,0.06663305312395096,0.9146447777748108,negative,False
+2017-10-11,city.mumbai,Transporters' strike may hit potato & garlic supply: Traders,Potato,0.00839740876108408,0.0342072956264019,0.9573953151702881,negative,False
+2017-10-14,city.rajkot,Facing glut; Deesa farmers dump potatoes in farms,Potato,0.01618323102593422,0.14662867784500122,0.8371881246566772,negative,False
+2017-11-21,city.chandigarh,Punjab potato rates plunge; edgy growers plan to dump tubers,Potato,0.013647083193063736,0.03785746544599533,0.9484955072402954,negative,False
+2017-11-22,city.chandigarh,Potato glut: Bajwa for MSP of alternate crops,Potato,0.06961176544427872,0.9102485179901123,0.02013973705470562,neutral,False
+2017-11-23,city.jaipur,Jaisalmer's canal area a boon for potato production,Potato,0.6726195216178894,0.2960154414176941,0.031365033239126205,positive,False
+2017-12-04,city.indore,Upset over low prices; farmers throw potatoes near village pond,Potato,0.011805174872279167,0.055559370666742325,0.9326354265213013,negative,False
+2017-12-12,city.kolkata,Winter rain to delay state potato harvest,Potato,0.012560229748487473,0.07656998187303543,0.9108697772026062,negative,False
+2017-12-31,business.india-business,WB govt extends transport subsidy for potato farmers,Potato,0.5486499071121216,0.41301602125167847,0.03833412006497383,positive,False
+2018-01-06,city.rajkot,Potato farmers sell in distress,Potato,0.10233543813228607,0.876850962638855,0.020813623443245888,neutral,False
+2018-01-07,city.ahmedabad,15% increase in potato production expected,Potato,0.9492709040641785,0.03489892557263374,0.015830250456929207,positive,False
+2018-01-07,city.lucknow,Tonnes of potato dumped in Lucknow's VVIP localities,Potato,0.009116284549236298,0.038226138800382614,0.9526576399803162,negative,False
+2018-01-08,city.lucknow,For 30 years; UP's potato growers await vodka tonic for their woes,Potato,0.10046528279781342,0.6924047470092773,0.20713001489639282,neutral,False
+2018-01-14,city.lucknow,2 SP men held for dumping potatoes near secretariat,Potato,0.030240267515182495,0.11443798243999481,0.8553217053413391,negative,False
+2018-01-16,city.chandigarh,picsno takers cold storage owners farmers dump old potatoes,Potato,0.023762168362736702,0.7830053567886353,0.193232461810112,neutral,False
+2018-02-16,city.chandigarh,Punjab Chief Minister sets up panel for marketing potato; maize,Potato,0.07165243476629257,0.9144156575202942,0.013931836001574993,neutral,False
+2018-03-02,city.bhopal,CIAE scientists script success in growing jumbo size potatoes,Potato,0.866696298122406,0.12395334988832474,0.009350310079753399,positive,False
+2018-03-05,city.bareilly,UP government doubles potato procurement target,Potato,0.17355701327323914,0.796604573726654,0.029838433489203453,neutral,False
+2018-03-22,city.kolkata,Potato prices up by Rs 5/kg; likely to remain high,Potato,0.02460041083395481,0.02855178527534008,0.9468477368354797,negative,True
+2018-03-29,city.kolkata,DRDO flags bio-terror threat in potato disease,Potato,0.045392367988824844,0.5083094835281372,0.44629812240600586,neutral,False
+2018-04-25,city.indore,Prices shoot; potato farmers set to make killing,Potato,0.10403985530138016,0.8397961854934692,0.056164003908634186,neutral,False
+2018-05-10,city.bhubaneswar,Potato price rise: Govt tells collectors to arrest hoarders,Potato,0.02286226488649845,0.10173067450523376,0.8754070401191711,negative,False
+2018-05-10,city.cuttack,Potato price rise: Govt tells collectors to arrest hoarders,Potato,0.02286226488649845,0.10173067450523376,0.8754070401191711,negative,False
+2018-05-30,city.ahmedabad,Relief for farmers as potato prices firm up,Potato,0.0606665275990963,0.06709522753953934,0.872238278388977,negative,True
+2018-06-09,india,Sharp fall in supplies drives up prices of potatoes in Delhi,Potato,0.01416755560785532,0.021282687783241272,0.964549720287323,negative,False
+2018-07-10,world.rest-of-world,Did North Korea's Kim put potatoes over Pompeo?,Potato,0.04001124948263168,0.8203775882720947,0.1396111398935318,neutral,False
+2018-07-24,city.mumbai,Day 4 of transporters' strike: Potato prices climb as supply falls by 40%,Potato,0.031570449471473694,0.011111732572317123,0.9573177695274353,negative,False
+2018-08-07,city.ahmedabad,Gujarat to have centre of excellence for potato-seed,Potato,0.7507042288780212,0.2418292760848999,0.007466537412256002,positive,False
+2018-10-24,city.coimbatore,Saving potato from invasive parasite an arduous task,Potato,0.07375480979681015,0.8860927224159241,0.040152497589588165,neutral,False
+2018-10-28,city.shimla,lahaul spiti potatoes are free of virus lift the ban min,Potato,0.16663657128810883,0.8106209635734558,0.022742491215467453,neutral,False
+2018-10-31,city.chandigarh,Centre lifts ban on marketing of Lahaul potato,Potato,0.04693165421485901,0.5800315141677856,0.37303683161735535,neutral,False
+2018-11-25,city.rajkot,Deesa potato farmers stare at glut; falling prices,Potato,0.012978548184037209,0.026294467970728874,0.9607269763946533,negative,False
+2018-12-03,city.kolkata,Potatoes to be stored for free in government bid to stabilise prices,Potato,0.10916408896446228,0.8768279552459717,0.014007914811372757,neutral,False
+2018-12-04,city.coimbatore,ICAR decides to close down Ooty potato research institute,Potato,0.014694380573928356,0.27098768949508667,0.7143179178237915,negative,False
+2018-12-08,city.ludhiana,Punjab asks Centre to allow export of sugar and potatoes,Potato,0.12091006338596344,0.8586820960044861,0.02040783129632473,neutral,False
+2018-12-15,city.chandigarh,Raised potato farmers issue with Centre: CM,Potato,0.04130428284406662,0.9249033331871033,0.0337923988699913,neutral,False
+2018-12-20,city.jammu,Rich who don't donate are like rotten potatoes: Jammu and Kashmir governor Satya Pal Malik,Potato,0.03398315608501434,0.8559055328369141,0.1101113110780716,neutral,False
+2018-12-21,city.ludhiana,Situation grim for potato growers as prices crash,Potato,0.049614060670137405,0.028182867914438248,0.9222030639648438,negative,False
+2018-12-22,city.chandigarh,Akalis seek aid for potato growers,Potato,0.538273811340332,0.4302345812320709,0.031491633504629135,positive,False
+2018-12-23,city.amritsar,Cold storage owners feel the pinch in wake of low potato prices,Potato,0.02554924041032791,0.09930259734392166,0.8751481175422668,negative,False
+2018-12-26,city.lucknow,Reduced to potato sacks: Apna Dal charges BJP with arrogance,Potato,0.015870582312345505,0.1140049621462822,0.870124340057373,negative,False
+2019-01-01,india,24 clusters for tomatoes; onions and potatoes in 2019 to enhance farm income,Potato,0.6532426476478577,0.3370484709739685,0.009708881378173828,positive,False
+2019-01-03,city.agra,farmer makes rs 490 from 19000 kg of potatoes sends money to prime minister narendra modi,Potato,0.07590843737125397,0.9061509370803833,0.017940592020750046,neutral,False
+2019-01-04,city.coimbatore,Frost damages potato; tea plantations,Potato,0.01815185695886612,0.25653910636901855,0.7253090143203735,negative,False
+2019-01-07,city.chandigarh,Harsimrat hits out at Cong MPs over potato protest outside Parliament,Potato,0.04702679440379143,0.10976888984441757,0.8432043194770813,negative,False
+2019-01-09,city.agra,Five years on; potato processing unit remain a dream for Agra farmers,Potato,0.5052214860916138,0.48515960574150085,0.009618951007723808,positive,False
+2019-01-13,city.chandigarh,Low cost value-added potato items to end farmers' financial woes,Potato,0.6411011815071106,0.34606435894966125,0.012834354303777218,positive,False
+2019-01-15,city.agra,potato rots in cold storage centres as farmers fail to clear stocks on time,Potato,0.00919763371348381,0.02771632932126522,0.9630860090255737,negative,False
+2019-02-03,city.chandigarh,Punjab offers freight subsidy to potato growers,Potato,0.4810307025909424,0.5056294798851013,0.013339841738343239,neutral,False
+2019-02-05,city.indore,Cold storages drop prices by 30% as potato production decreases,Potato,0.011290650814771652,0.017120307311415672,0.9715890884399414,negative,False
+2019-02-07,city.indore,Poor supply of potato increases production cost of chips,Potato,0.01288127712905407,0.027760028839111328,0.9593586325645447,negative,False
+2019-02-22,city.ludhiana,High moisture content delays potato harvest,Potato,0.43949034810066223,0.49999237060546875,0.06051722168922424,neutral,False
+2019-02-25,city.ludhiana,Rain steals thunder; potato farmers stare at losses for third straight year,Potato,0.01322125643491745,0.07632716745138168,0.9104515910148621,negative,False
+2019-02-26,city.chandigarh,Captain; Harsimrat slug it out on Twitter over potato losses,Potato,0.03216607868671417,0.2974657416343689,0.6703681945800781,negative,False
+2019-03-15,city.lucknow,Potato farmers on warpath; BKU plans rallies after Holi,Potato,0.045989055186510086,0.381163626909256,0.5728473663330078,negative,False
+2019-03-18,city.indore,More demand; less supply ups potato prices by 30%,Potato,0.9092358350753784,0.045261915773153305,0.04550229012966156,positive,False
+2019-04-25,city.ahmedabad,Gujarat HC orders inventory of FC5 potatoes in cold storages,Potato,0.3596194088459015,0.44984036684036255,0.19054022431373596,neutral,False
+2019-04-27,city.ahmedabad,Produce potatoes on our terms and we will withdraw suit; PepsiCo tells farmers,Potato,0.03745793551206589,0.9107366800308228,0.05180533602833748,neutral,False
+2019-05-02,city.meerut,Farmers protest against MNC's FIRs against potato growers in Gujarat,Potato,0.01880546845495701,0.05521589145064354,0.9259786009788513,negative,False
+2019-05-03,city.ahmedabad,PepsiCo to withdraw lawsuit against Gujarat potato farmers,Potato,0.03135117515921593,0.15247507393360138,0.816173791885376,negative,False
+2019-05-04,business.india-business,We will not settle the cases: Potato farmers to PepsiCo,Potato,0.0306447334587574,0.8977802395820618,0.07157499343156815,neutral,False
+2019-05-09,city.bengaluru,PWD minister HD Revanna now picks fight with deputy commissioner over potato seeds,Potato,0.025098882615566254,0.1790951043367386,0.7958059310913086,negative,False
+2019-06-17,city.patna,Patnaites feel the pinch as potato and onion prices soar,Potato,0.08221657574176788,0.2087617665529251,0.7090216875076294,negative,False
+2019-08-10,city.kolhapur,Potatoes & eggs sell like hot cake as vegetables elude residents,Potato,0.1555415689945221,0.8243979811668396,0.02006043680012226,neutral,False
+2019-08-26,city.agra,Debt-ridden UP potato farmer in search of customer to sell kidney,Potato,0.025176823139190674,0.2918873429298401,0.6829358339309692,negative,False
+2019-08-27,city.agra,UP: Debt-ridden potato farmer claims to have got two offers for his kidney,Potato,0.5753262639045715,0.3731233775615692,0.051550399512052536,positive,False
+2019-09-27,life-style.health-fitness,Mumbaikars; time to stop being a 'chair-potato',Potato,0.06951311975717545,0.8694180846214294,0.061068784445524216,neutral,False
+2019-10-02,life-style.food-news,Make your Navratri fasts interesting with this delicious Potato Cheela recipe,Potato,0.10435163974761963,0.8783271908760071,0.017321191728115082,neutral,False
+2019-10-22,city.hubballi,Floods; price drop a double whammy to potato farmers,Potato,0.015885449945926666,0.0340394601225853,0.950075089931488,negative,False
+2019-11-06,city.surat,Gujarat: Unseasonal rain sends prices of potato; onion skyrocketing,Potato,0.010906885378062725,0.029554184526205063,0.9595388174057007,negative,False
+2019-11-25,city.kolkata,Potato from West Bengal seeds to make way to your platter,Potato,0.05504873767495155,0.9201087951660156,0.024842463433742523,neutral,False
+2019-11-27,city.ahmedabad,Gujarat farmers protest PepsiCo's assertion on potato cultivar,Potato,0.01610456220805645,0.06721315532922745,0.916682243347168,negative,False
+2019-11-29,city.goa,Governor Satya Pal Malik likens India's 'selfish' super-rich to bag of rotten potatoes,Potato,0.03917078301310539,0.4510320723056793,0.5097971558570862,negative,False
+2019-12-04,city.agra,Govt plans to establish potato centre in Uttar Pradesh,Potato,0.1421276479959488,0.8485443592071533,0.009327909909188747,neutral,False
+2019-12-09,city.nagpur,Onion rates ease on fears of imports; potato's moving up,Potato,0.9244439601898193,0.03242887929081917,0.04312713071703911,positive,False
+2020-01-02,city.lucknow,No cheer: Spurt in tomato; onion & potato prices burns hole in pockets,Potato,0.08880028128623962,0.6614403128623962,0.24975945055484772,neutral,False
+2020-01-04,city.kolkata,West Bengal: Potato demand-supply gap may widen after showers,Potato,0.0635080635547638,0.11367671191692352,0.8228152394294739,negative,False
+2020-01-08,city.bhubaneswar,Potato bites as prices continue to mount,Potato,0.046567562967538834,0.05253305658698082,0.900899350643158,negative,False
+2020-01-22,city.pune,Pune: Potato going the onion way as supplies fall in markets,Potato,0.010979615151882172,0.030643146485090256,0.9583772420883179,negative,False
+2020-01-24,city.ahmedabad,Gujarat: Canteen staff crushes potatoes with feet; medical college issues notice to contractor,Potato,0.035657625645399094,0.6385230422019958,0.32581934332847595,neutral,False
+2020-01-29,city.ahmedabad,Gujarat a hub for production; export of potatoes: PM Narendra Modi,Potato,0.13047920167446136,0.8556680679321289,0.013852696865797043,neutral,False
+2020-01-30,city.ahmedabad,ITC to begin red potato cultivation trials in Gujarat,Potato,0.12077709287405014,0.8692170977592468,0.0100058289244771,neutral,False
+2020-02-05,city.ahmedabad,Sola canteen contractor 'back on his feet' despite potato video,Potato,0.6040144562721252,0.2079601287841797,0.18802544474601746,positive,False
+2020-02-09,city.ahmedabad,Turning small potatoes into big biz,Potato,0.03867071494460106,0.9107804894447327,0.050548750907182693,neutral,False
+2020-02-09,city.ahmedabad,Gujarat: FDI seeks taste of frozen potato items,Potato,0.3958286941051483,0.5921633839607239,0.01200793869793415,neutral,False
+2020-03-28,city.kolkata,Potato growers in north Bengal hit hard by lockdown,Potato,0.01667952537536621,0.02744235470890999,0.9558781385421753,negative,False
+2020-03-31,city.pune,Less arrival of onion and potato to jack up prices in Pune,Potato,0.02809133380651474,0.45026275515556335,0.5216459035873413,negative,True
+2020-04-02,city.indore,Cold storages back in biz as farmers shelf potato,Potato,0.17500509321689606,0.648084819316864,0.17691002786159515,neutral,False
+2020-04-05,city.nagpur,Onions; potatoes slide lower but veggies rule high,Potato,0.11883652210235596,0.060363445430994034,0.8208000063896179,negative,False
+2020-04-06,city.nagpur,NMC says no onions and potatoes at temporary veggie markets,Potato,0.025770781561732292,0.8096427917480469,0.1645863652229309,neutral,False
+2020-04-07,city.pune,Marginal rise in wholesale price of onion & potato,Potato,0.048171497881412506,0.04941703379154205,0.9024115204811096,negative,True
+2020-04-14,city.kolkata,Kolkata: Potato; fish rates go through roof; mutton stays off shelves,Potato,0.05436040833592415,0.488165020942688,0.45747461915016174,neutral,False
+2020-04-18,city.meerut,Govt-run kitchen found using rotten potatoes for meals meant for poor,Potato,0.016714856028556824,0.10830935090780258,0.874975860118866,negative,False
+2020-05-31,city.kolkata,Kolkata: From jewellery to potato; shops see a Covid-19 change,Potato,0.10092709213495255,0.887678325176239,0.011394612491130829,neutral,False
+2020-07-21,city.kolkata,Kolkata: At Rs 30 per kg; humble potato pinches pockets,Potato,0.5007333159446716,0.22552789747714996,0.2737388014793396,positive,False
+2020-07-22,city.ahmedabad,Potato; tomato prices spike in Ahmedabad,Potato,0.7757594585418701,0.03884589299559593,0.18539462983608246,positive,False
+2020-07-27,city.bhopal,No football or cricket; only onions and potatoes at this MP's Satna stadium,Potato,0.026060888543725014,0.9485113620758057,0.025427717715501785,neutral,False
+2020-08-10,city.ahmedabad,Ahmedabad: Diabetic man objects to potato curry; wife beats him,Potato,0.015376322902739048,0.05699208378791809,0.9276314973831177,negative,False
+2020-09-01,city.kolkata,West Bengal: Export; hoarding widen gap between wholesale and retail prices of potato,Potato,0.4186228811740875,0.3241232633590698,0.2572539150714874,positive,False
+2020-09-04,city.kolkata,Kolkata Police raids to bring down potato price,Potato,0.055093228816986084,0.15183134377002716,0.793075442314148,negative,False
+2020-09-10,city.mumbai,Maharashtra: Prices of tomato; potato and onion hit the roof,Potato,0.03138922527432442,0.040506791323423386,0.928104043006897,negative,False
+2020-09-10,city.thane,Maharashtra: Prices of tomato; potato and onion hit the roof,Potato,0.03138922527432442,0.040506791323423386,0.928104043006897,negative,False
+2020-09-10,city.navimumbai,Maharashtra: Prices of tomato; potato and onion hit the roof,Potato,0.03138922527432442,0.040506791323423386,0.928104043006897,negative,False
+2020-09-13,city.ahmedabad,Kitchen budget on fire; potato at Rs 45/kg in Ahmedabad,Potato,0.036165617406368256,0.19203028082847595,0.7718040943145752,negative,False
+2020-09-24,city.hyderabad,Telangana: New central Bill may push potato prices up,Potato,0.12294928729534149,0.0624752938747406,0.8145754337310791,negative,False
+2020-10-23,city.delhi,Delhi: Onion and potato prices hit the roof in festive season,Potato,0.09217537194490433,0.04075078293681145,0.8670738935470581,negative,False
+2020-10-31,india,India to get potatoes from Bhutan to meet supply gap; calm prices,Potato,0.853110671043396,0.13139353692531586,0.015495790168642998,positive,False
+2020-11-01,india,Potato prices up 92% in one year; onions by 44%,Potato,0.016102522611618042,0.04551051929593086,0.9383869767189026,negative,True
+2020-11-02,city.lucknow,UP CM Yogi Adityanath orders crackdown on hoarding of potato; onion,Potato,0.04206165298819542,0.2221762239933014,0.7357621192932129,negative,False
+2020-11-07,city.kolkata,Potato price continues to pinch pockets,Potato,0.05245385691523552,0.027522286400198936,0.9200238585472107,negative,False
+2020-11-11,city.ahmedabad,Ahmedabad: Common veggies no small potatoes,Potato,0.040896378457546234,0.9255256056785583,0.033578019589185715,neutral,False
+2020-11-11,city.lucknow,51 more cold storages for potatoes in UP soon,Potato,0.17800627648830414,0.7996068000793457,0.022386882454156876,neutral,False
+2020-11-23,city.kolkata,At Rs 45; potato price breaches all records in West Bengal,Potato,0.02901529148221016,0.05193467438220978,0.9190501570701599,negative,False
+2020-11-26,city.ranchi,Rising onion; potato prices send family budgets haywire in Steel City,Potato,0.027478711679577827,0.13605648279190063,0.8364648222923279,negative,False
+2020-11-28,city.ranchi,Potato trader robbed of Rs 6.82 lakh in Hazaribag; Rs 50;000 looted from Lohardaga liquor shop,Potato,0.010090886615216732,0.03895800933241844,0.9509510397911072,negative,False
+2020-12-05,city.kolkata,Dilip hits out at Trinamool over spiralling prices of potato; onion,Potato,0.0940692275762558,0.08879516273736954,0.8171356320381165,negative,False
+2020-12-08,city.dehradun,Farmers' agitation at Del borders diverts vegetable supply to Doon; potato; onions prices fall,Potato,0.010633421130478382,0.05770014226436615,0.9316664338111877,negative,False
+2020-12-22,city.lucknow,Top producer; UP eyeing top slot in potato productivity,Potato,0.9176658391952515,0.06797188520431519,0.014362271875143051,positive,False
+2020-12-28,city.kolkata,At Rs 30/kg; potato pinches pockets,Potato,0.40293511748313904,0.050650086253881454,0.546414852142334,negative,False
+2020-12-28,city.chennai,Chennai: Capsicum to cost more this week; potato less,Potato,0.3344782888889313,0.6067097187042236,0.0588119737803936,neutral,False
+2021-01-16,city.ludhiana,Rs 4 lakh burgled from potato chips firm godown,Potato,0.07094179093837738,0.4611413776874542,0.467916876077652,negative,False
+2021-01-16,city.chandigarh,Rs 4 lakh burgled from potato chips firm godown,Potato,0.07094179093837738,0.4611413776874542,0.467916876077652,negative,False
+2021-01-29,city.chennai,Potato prices plummet due to excess supply at Koyambedu,Potato,0.010512495413422585,0.02125369757413864,0.9682338833808899,negative,False
+2021-02-22,city.ranchi,Prisoners in jail for stealing potatoes released through Jail Adalat,Potato,0.06548582017421722,0.6617631316184998,0.2727510631084442,neutral,False
+2021-03-09,city.kolkata,Bumper potato yield gives price stability hope,Potato,0.3282843828201294,0.6572325825691223,0.014483074657619,neutral,False
+2021-03-29,city.chennai,Chennai: Vegetable prices dip at Koyambedu; but wholesale potato rates may rise this week,Potato,0.3351723551750183,0.04150698706507683,0.6233206391334534,negative,False
+2021-05-28,life-style.beauty,How to lighten dark underarms with potato,Potato,0.050757378339767456,0.9205801486968994,0.02866252325475216,neutral,False
+2021-05-30,city.kolkata,Himsagar cheaper than potato: Yaas; market time curbs lead to distress sale in Kolkata,Potato,0.02999037131667137,0.0795450285077095,0.8904645442962646,negative,False
+2021-06-14,life-style.food-news,Viral: In the country of Papad ki Subzee; Netizens find Potato Chips Curry gross,Potato,0.03560098260641098,0.9159989953041077,0.048400022089481354,neutral,False
+2021-09-07,city.agra,north central railway flags off first kisan rail from agra to assam with 270 tonnes of potato,Potato,0.426748663187027,0.46852603554725647,0.10472524166107178,neutral,False
+2021-09-13,city.agra,Farmers to remind PM of his 'promise' for potato processing unit in Agra at Aligarh rally,Potato,0.21697275340557098,0.767777144908905,0.015250101685523987,neutral,False
+2021-10-05,city.goa,Agri institute to conduct trials to grow potatoes; apples in Goa,Potato,0.1715610921382904,0.8172118067741394,0.011227107606828213,neutral,False
+2021-10-25,city.ranchi,Potato growers rue crop damages due to October rain,Potato,0.029566923156380653,0.043752457946538925,0.9266806840896606,negative,False
+2021-10-28,city.agra,fuel prices push up transport costs 75l sacks of potato lying in cold storage,Potato,0.03429991006851196,0.062408894300460815,0.9032911062240601,negative,False
+2021-12-01,city.chandigarh,Target potato processing and cold storage technology; Manohar Lal Khattar to foreign cooperation department,Potato,0.18413862586021423,0.8075845241546631,0.008276895619928837,neutral,False
+2021-12-04,city.ahmedabad,PepsiCo's exclusive rights to potato variety revoked,Potato,0.05734453722834587,0.9305132627487183,0.012142176739871502,neutral,False
+2021-12-19,city.rajkot,mount abu chills at 3c potato farmers happy,Potato,0.034253012388944626,0.14823812246322632,0.8175089359283447,negative,False
+2022-01-10,city.indore,Rain disrupts potato harvesting,Potato,0.011739491485059261,0.09251599758863449,0.8957445025444031,negative,False
+2022-02-07,city.indore,Cold chains may go full as potato yield expected to be high,Potato,0.792144238948822,0.12963636219501495,0.07821941375732422,positive,False
+2022-02-22,city.bhubaneswar,Humble potato becomes pricey,Potato,0.06353960186243057,0.85893315076828,0.07752728462219238,neutral,False
+2022-02-26,city.patna,22 women use zero tillage method to grow potatoes,Potato,0.03219493478536606,0.9398291707038879,0.027975885197520256,neutral,False
+2022-03-29,business.india-business,Potato pulls down horticulture output; 1st fall in 7 years,Potato,0.009138623252511024,0.02022428810596466,0.9706371426582336,negative,False
+2022-04-17,city.indore,Slump in potato market as chips cos stall purchases,Potato,0.013016780838370323,0.02758481353521347,0.9593983888626099,negative,False
+2022-05-09,city.kolkata,Potato price breaches Rs 40/kg in Kolkata,Potato,0.07579756528139114,0.04989198222756386,0.8743104338645935,negative,False
+2022-05-12,city.kolkata,Farmers told to release potato from storage,Potato,0.054574817419052124,0.7427980303764343,0.20262719690799713,neutral,False
+2022-05-14,city.kolkata,Pricey potato adds to kitchen budget burden,Potato,0.014745041728019714,0.044026538729667664,0.941228449344635,negative,False
+2022-09-18,life-style.food-news,Millet; potato; oats or hemp: Choose a vegan milk that's best for you,Potato,0.04908473789691925,0.9264456033706665,0.024469710886478424,neutral,False
+2022-10-10,city.ahmedabad,Gujarat: Cops know their onions; find Rs 15.33 lakh booze under potatoes,Potato,0.03460870683193207,0.9102341532707214,0.05515711382031441,neutral,False
+2022-11-08,city.bengaluru,bengaluru onion potato prices soar as supply hit due to rain,Potato,0.4523097276687622,0.08001424372196198,0.4676761031150818,negative,True
+2022-11-14,city.kolkata,Nashik-UP supply brings down onion; potato prices across Kolkata,Potato,0.00985019002109766,0.030557580292224884,0.9595921635627747,negative,False
+2022-11-15,city.kolkata,Ensure potato price dips below 20/kg: CM Mamata Banerjee,Potato,0.0570690855383873,0.701920211315155,0.24101072549819946,neutral,False
+2023-01-21,city.agra,Potato farmers bear brunt of cold wave; 10% of crop damaged,Potato,0.04173043370246887,0.5035863518714905,0.45468321442604065,neutral,False
+2023-02-09,city.kolkata,Farm distress over record potato yield; retail prices refuse to cool in West Bengal,Potato,0.027196921408176422,0.02882809191942215,0.9439749717712402,negative,False
+2023-02-09,city.kolkata,Farmers fear further potato price crash,Potato,0.013951929286122322,0.06443654000759125,0.9216115474700928,negative,False
+2023-02-10,city.kolkata,Potato trader kills self after incurring loss,Potato,0.025777766481041908,0.17459529638290405,0.799626886844635,negative,False
+2023-02-14,city.kolkata,Chandramukhi; Hemalini: A lot's in a name if you're buying potatoes,Potato,0.035801999270915985,0.9384776949882507,0.025720296427607536,neutral,False
+2023-02-18,city.amritsar,Poor demand and yield: Double blow for Punjab's potato growers,Potato,0.014003874734044075,0.01942502334713936,0.966571033000946,negative,False
+2023-03-08,city.ahmedabad,Rs 330 crore package for onion; potato farmers announced in Gujarat,Potato,0.40040844678878784,0.5852192640304565,0.014372306875884533,neutral,False
+2023-03-13,city.lucknow,UP to push potato crop down South amid falling rates,Potato,0.377602756023407,0.11464671790599823,0.5077505707740784,negative,False
+2023-03-20,city.ranchi,Women from Palamu get potatoes as wages in Bihar,Potato,0.05021107941865921,0.8093600273132324,0.14042891561985016,neutral,False
+2023-03-20,city.indore,Increase in potato supplies dampens prices in local mkt,Potato,0.37275201082229614,0.03244131803512573,0.5948066711425781,negative,False
+2023-04-04,city.ahmedabad,Ahmedabad: Rotten potatoes in your panipuris!,Potato,0.053115248680114746,0.4655190706253052,0.4813656508922577,negative,False
+2023-05-23,life-style.health-fitness.de-stress,Optical Illusion: There's a potato hidden among these bears; can you find it within 7 seconds?,Potato,0.037018220871686935,0.9184033274650574,0.044578440487384796,neutral,False
+2023-06-11,home.sunday-times,Meet the Indians making chips in America's potato belt,Potato,0.06318263709545135,0.9170454144477844,0.019771898165345192,neutral,False

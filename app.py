@@ -24,9 +24,10 @@ import joblib
 import pandas as pd
 import streamlit as st
 
-BASE_DIR = Path(os.environ.get("PBL_ROOT", r"C:\Users\siddh\Desktop\PBL"))
+BASE_DIR = Path(os.environ.get("PBL_ROOT") or Path(__file__).resolve().parent)   # repo root (app.py sits in it)
 os.environ.setdefault("PBL_ROOT", str(BASE_DIR))   # live_pipeline reads the same root
 sys.path.insert(0, str(BASE_DIR / "src"))
+from config import COMMODITIES, commodities_with_model, display_order   # single source of truth for commodities
 try:
     import live_pipeline as lp
     LIVE_IMPORT_ERROR = None
@@ -45,8 +46,8 @@ NON_FEATURE_COLS = {
     "next_price", "next_date", "pct_change_to_next", "days_to_next_report",
     "spike",
 }
-COMMODITIES_WITH_MODEL = ["Onion", "Soyabean"]
-ALL_COMMODITIES = ["Onion", "Soyabean", "Wheat"]
+COMMODITIES_WITH_MODEL = commodities_with_model()    # from config.py (has_viable_model)
+ALL_COMMODITIES = display_order()                    # modeled commodities first, then tracked-only ones
 SPIKE_THRESHOLD_PCT = 5.0
 
 STATUS_TEXT = {
@@ -117,11 +118,11 @@ def show_performance(commodity: str, metadata: dict):
 # ====================================================================== historical
 
 def render_historical(commodity, df, news_df, metadata, feature_cols):
-    # st.warning(
-    #     "**Backtest data:** bounded to the validated modeling period (2013-07-01 to 2023-06-30) - the news "
-    #     "dataset ends there. 'Latest' below means the last date in that window, not today. "
-    #     "See the **Live monitor** tab for prices collected daily."
-    # )
+    st.warning(
+        "**Backtest data:** bounded to the validated modeling period (2013-07-01 to 2023-06-30) - the news "
+        "dataset ends there. 'Latest' below means the last date in that window, not today. "
+        "See the **Live monitor** tab for prices collected daily."
+    )
     sub = df[df["commodity"] == commodity].sort_values("date").reset_index(drop=True)
     latest_row = sub.iloc[-1]
 
@@ -145,12 +146,9 @@ def render_historical(commodity, df, news_df, metadata, feature_cols):
 
     if commodity not in COMMODITIES_WITH_MODEL:
         st.error(
-            f"**No viable prediction model for {commodity}.** Only 11 spike events (5% next-day threshold) "
-            f"occurred across {commodity}'s entire 10-year validated price history - too few to train or "
-            f"evaluate a classifier meaningfully (the held-out test set contained just 3 positive examples). "
-            f"All three baseline models tested (Logistic Regression, Random Forest, XGBoost) predicted zero "
-            f"spikes. Reported as a genuine finding about {commodity}'s volatility at this market and "
-            f"threshold, not a missing feature."
+            f"**No viable prediction model for {commodity}:** {COMMODITIES[commodity]['no_model_note']} "
+            f"This is a reported finding about {commodity} at this market and the 5% threshold, "
+            f"not a missing feature."
         )
         return
 
@@ -261,7 +259,7 @@ def render_live(commodity, metadata):
         show_performance(commodity, metadata)
     elif r["status"] == "no_model":
         st.error(f"**No prediction for {commodity}.** Its live price is tracked, but it has no viable spike "
-                 f"model: only 11 spike events in 10 years of history (Phase 11).")
+                 f"model: {COMMODITIES[commodity]['no_model_note']}")
     else:
         st.info(f"**No live prediction yet** - {r['reason']}.")
 

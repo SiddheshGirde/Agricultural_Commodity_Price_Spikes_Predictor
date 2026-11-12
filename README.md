@@ -1,231 +1,207 @@
 # Agricultural Commodity Price Spike Predictor
 
-NLP-based sentiment analysis of Indian agricultural market news (FinBERT),
-combined with historical mandi price data, to predict next-trading-day
-price spikes in Onion, Wheat, and Soyabean.
+Predicts whether the wholesale price of an Indian agricultural commodity will rise **5% or more on the
+next trading day**, combining historical mandi prices (Agmarknet) with FinBERT sentiment of news
+headlines. Covers **Onion, Soyabean, Wheat and Potato**. Includes a Streamlit dashboard and a daily
+live-price collector. Semester project (AI / ML / NLP).
 
-**Academic semester project.** Not a trading tool — see Limitations.
+**Result, stated plainly:** only **Soyabean** produced a usable model. Onion was weak. Wheat and Potato
+produced negative results, which are reported rather than hidden. Most of the engineering effort went
+into making the data and the evaluation trustworthy (see *Findings*).
 
----
+## Results
 
-## What this actually does
+Chronological train/test split (never shuffled); metrics on the held-out, later period.
 
-1. Pulls daily wholesale (mandi) prices for Onion (Lasalgaon), Wheat
-   (Kanpur Grain), and Soyabean (Indore) — the benchmark market for each
-   commodity, from India's Agmarknet dataset.
-2. Pulls ~3.8M Indian news headlines (2001–2023), filters to the ~2,000
-   that mention these three commodities.
-3. Scores each headline's sentiment with FinBERT (`ProsusAI/finbert`),
-   with a targeted correction for a confirmed domain-gap bug (see below).
-4. Aggregates sentiment to one row per (commodity, date), merges it onto
-   the price calendar, engineers rolling/momentum price features.
-5. Labels each day: does price rise ≥5% on the *next* trading day?
-6. Trains and compares Logistic Regression, Random Forest, and XGBoost
-   per commodity, using a strict chronological (not random) train/test
-   split.
-7. Explains the winning model with SHAP.
-8. Serves everything through a Streamlit dashboard.
+| Commodity | Benchmark market | Spike rate | Test spikes | Random Forest F1 / ROC-AUC | Outcome |
+|---|---|---|---|---|---|
+| Soyabean | Indore | 7.3% | 63 | 0.657 / 0.873 | Usable model |
+| Onion | Lasalgaon | 22.5% | 99 | 0.309 / 0.585 | Weak |
+| Potato | Khatra | 3.3% | 26 | 0.000 / 0.524 | No viable model: models did not beat chance (best ROC-AUC 0.616) |
+| Wheat | Kanpur (Grain) | 0.39% | 3 (70/30 split) | 0.000 / 0.649 | No model: only 11 spike events in 10 years |
 
-## Setup
+* For Onion, Logistic Regression scored marginally higher than Random Forest (F1 0.349, ROC-AUC 0.589).
+  Random Forest is used throughout the dashboard and SHAP analysis for consistency; both are weak.
+* Wheat's test set has 3 positives, so its metrics are not meaningful and are reported only as such.
+* Potato's viability rule was fixed **before** training (test ROC-AUC >= 0.65 and Random Forest
+  precision >= 3x the base rate). It failed both. The 5% threshold was not changed to improve results.
+
+## How it works
+
+```mermaid
+flowchart LR
+  A["Agmarknet mandi prices<br/>2013-2023, benchmark markets"] --> C["preprocessing.py"]
+  B["India news headlines<br/>3.85M, filtered by commodity"] --> C
+  C --> D["sentiment.py<br/>FinBERT + price-direction fix"]
+  D --> E["aggregate_sentiment.py<br/>daily sentiment"]
+  C --> F["merge_price_sentiment.py"]
+  E --> F
+  F --> G["features.py<br/>rolling and lag features"]
+  G --> H["generate_target.py<br/>5% next-trading-day spike"]
+  H --> I["train.py<br/>chronological split<br/>LR, Random Forest, XGBoost"]
+  I --> J["explain.py<br/>SHAP"]
+  I --> K["app.py<br/>Streamlit dashboard"]
+  L["data.gov.in live API"] --> M["live_pipeline.py collect<br/>daily, insert-only"]
+  M --> N["live price history"]
+  N --> O["live_pipeline.py score<br/>price-only"]
+  I -.-> O
+  O --> K
+```
+
+## Quick start (dashboard only)
+
+The processed data and trained models are committed, so the dashboard runs without downloading anything.
 
 ```bash
-python -m venv venv
-venv\Scripts\Activate.ps1          # Windows PowerShell
+git clone https://github.com/SiddheshGirde/Agricultural-Commodity-Price-Spikes-Predictor.git
+cd Agricultural-Commodity-Price-Spikes-Predictor
+python -m venv .venv
+.venv\Scripts\activate          # Windows;  source .venv/bin/activate on macOS/Linux
 pip install -r requirements.txt
+streamlit run app.py
 ```
 
-`requirements.txt` includes `pyarrow` (Parquet support) and `xgboost`
-in addition to the original list — both added mid-project when they
-were actually needed, not anticipated upfront.
+Developed and tested on Windows with Python 3.14. The **Live monitor** tab is empty until the collector
+has run (see below); the **Historical backtest** tab works immediately.
 
-## Data — not included in this repo, download separately
+## Reproducing the pipeline from raw data
 
-Raw source files are excluded from version control (large, and — for
-the news dataset — of uncertain redistribution license). To reproduce
-from scratch:
+Raw data is not in the repository (size, and the news text is third-party). Download it, then run the stages in order.
 
-| Data | Source | Place in |
+| Data | Source | Put it in |
 |---|---|---|
-| Prices | [Daily Market Prices of Commodity India (2001–2026)](https://www.kaggle.com/datasets/khandelwalmanas/daily-commodity-prices-india), Parquet folder | `Data/parquet/` |
-| News | [India News Headlines Dataset](https://www.kaggle.com/datasets/therohk/india-headlines-news-dataset) | `data/raw/news/` |
-
-Everything downstream of these two downloads **is** committed
-(`data/interim/*.csv`, `models/*.pkl`) — the full multi-million-row raw
-files are not, but every cleaned/aggregated intermediate output is, so
-the dashboard and models are usable without re-running the full
-pipeline.
-
-## Reproducing the pipeline
-
-Run in order — each stage's output feeds the next:
+| Daily mandi prices 2001-2026 (Parquet) | [Kaggle: khandelwalmanas/daily-commodity-prices-india](https://www.kaggle.com/datasets/khandelwalmanas/daily-commodity-prices-india) | `Data/parquet/` (files `2001.parquet`, ...) |
+| India news headlines | [Kaggle: therohk/india-headlines-news-dataset](https://www.kaggle.com/datasets/therohk/india-headlines-news-dataset) | `data/raw/news/india-news-headlines.csv` |
 
 ```bash
-python src/preprocessing.py         # Phase 3 - clean price + news, filter to 3 commodities/benchmark markets
-python src/sentiment.py             # Phase 5 - FinBERT scoring + price-direction override
-python src/aggregate_sentiment.py   # Phase 6 - headline-level -> daily sentiment
-python src/merge_price_sentiment.py # Phase 7 - align price calendar with sentiment (has_news flag)
-python src/features.py              # Phase 8 - rolling/momentum price features
-python src/generate_target.py       # Phase 9 - spike label (t -> t+1, next TRADING day)
-python src/train.py                 # Phase 10/11 - chronological split, LR/RF/XGBoost comparison
-python src/explain.py               # Phase 13 - SHAP feature importance (Random Forest)
-streamlit run app.py                # Phase 14 - dashboard
+python src/preprocessing.py            # clean + filter prices and headlines   (add --inspect for samples)
+python src/sentiment.py                # FinBERT scoring (downloads the model on first run; CPU takes minutes)
+python src/aggregate_sentiment.py      # headline-level -> daily sentiment
+python src/merge_price_sentiment.py    # align with the price calendar
+python src/features.py                 # rolling / lag price features
+python src/generate_target.py          # 5% next-trading-day spike label
+python src/train.py                    # chronological split, LR / Random Forest / XGBoost
+python src/explain.py                  # SHAP for the commodities with a viable model
 ```
 
-## Key design decisions (and why)
+Paths are resolved from the repository location (`src/config.py`), so the project runs from any folder.
 
-- **Trading-day, not calendar-day, semantics throughout.** "Next day"
-  means the next day the benchmark market actually reported a price,
-  not the next calendar date. Necessary because mandis don't report on
-  Sundays/holidays — without this, weekend gaps would either create
-  spurious "1-day" spikes or leak information across the gap.
-- **One benchmark market per commodity**, not a national average:
-  Lasalgaon (Onion), Indore (Soyabean), Kanpur Grain (Wheat) — matches
-  how these prices are actually referenced in Indian financial press,
-  and avoids the aggregation/weighting complexity of blending thousands
-  of mandis with inconsistent reporting.
-- **Modeling window: 2013-07-01 to 2023-06-30.** The intersection of
-  Soyabean's price data start (2013-07-01, the true binding constraint
-  — not Wheat's, which was mistakenly used in an earlier draft of this
-  window) and the news dataset's actual end date (2023-06-30, discovered
-  during validation — the Kaggle listing's "21 years" claim describes
-  the *start* of coverage, not how current it is).
-- **Sentiment aggregation**: mean positive/neutral/negative probability
-  across a day's articles, dominant label (mode), dispersion (std dev,
-  explicit 0 — not NaN — on single-article days), `has_news` flag.
-  Zero-news days are NOT filled with a manufactured "neutral" score —
-  sentiment columns stay `NaN` until feature engineering, where they're
-  imputed to 0 specifically because sklearn's `RandomForestClassifier`
-  can't train on `NaN` (XGBoost could have used it natively, but a
-  shared feature set was kept for a fair 3-way model comparison).
+## Live price collector
 
-## Known limitation, found and corrected: FinBERT domain gap
+`src/live_pipeline.py` collects one benchmark-market price per commodity per day from data.gov.in
+(Agmarknet). It is separate from the historical pipeline, and the dashboard never calls the API.
 
-FinBERT (trained on the Financial PhraseBank — company/investor
-statements) initially scored **58.6% of "price up" headlines as
-positive** — e.g. *"Onion prices shoot up by 52% in a month"* scored
-0.92 positive. In that training domain, rising prices/profits are good
-news; for a consumer commodity, they're the opposite of what this
-project needs to predict. "Price down" headlines were scored correctly
-(89.9% negative), confirming this was a specific, directional gap, not
-random noise.
+```bash
+copy .env.example .env                    # then put your own data.gov.in API key in .env
+python src/live_pipeline.py collect       # at most one settled fetch per day
+python src/live_pipeline.py score         # local files only; price-only prediction
+python src/live_pipeline.py status
+python src/live_pipeline.py probe         # read-only: how full is today's feed right now?
+powershell -ExecutionPolicy Bypass -File scripts\setup_task.ps1    # Windows: run daily at 8 PM, catch up if missed
+```
 
-**Fix applied**: a targeted regex identifies price-rise language
-co-occurring with the word "price(s)" and swaps the positive/negative
-probabilities for those 130 headlines (out of 1,898). Scope
-deliberately narrow — output/export-volume language showing the same
-ambiguity (e.g. *"Soyabean exports up by 50%"*) was identified but left
-uncorrected, since export growth and output growth push commodity
-prices in *opposite* directions, and a blanket rule would introduce a
-new bug rather than fix this one. Affects ≤2 headlines in the full
-dataset — noted, not chased further.
+Design rules (each came from a problem found on real data):
+* **One settled fetch per day.** From 18:00 (`SETTLE_HOUR`, a guess) a finished outcome closes the day; earlier
+  runs never close it and never save a partly filled current day. The day's feed fills in gradually
+  (onion: 601 rows at 14:50, 759 at 19:34 on one observed day).
+* **Datewise, insert-only.** Rows are keyed by the data's own date; an existing date is never overwritten.
+* **Scoring needs 7 recent consecutive trading days** (no gap over 7 days, newest at most 7 days old) and says
+  why it refuses otherwise. An earlier version computed features across a ~3-year gap; it was replaced.
+* **Market names are matched ignoring spacing, case and "APMC" prefix/suffix.** The live feed formats names
+  differently from the archive (`Kanpur(Grain) APMC`, `APMC Lasalgaon `). Sub-yards such as `Lasalgaon(Vinchur)` are
+  different markets and are never substituted.
+* **The API needs a browser-like `User-Agent`** (otherwise an empty HTTP 502), and the shared sample key caps
+  responses at 10 records; use your own key.
 
-## Known limitation: Wheat has no viable model
+Live predictions are **price-only** (no live news) and out-of-time (models trained on 2013-2023 prices), so
+treat them as indicative, not calibrated.
 
-At the 5% next-day threshold, Wheat had **11 spike events across its
-entire 10-year validated history** (0.39% base rate, vs. 22.5% for
-Onion and 7.3% for Soyabean). A chronological test split puts only 3 of
-those events in the held-out set — too few for precision/recall/F1 to
-be statistically meaningful regardless of model or resampling
-technique. All three baselines (Logistic Regression, Random Forest,
-XGBoost) predicted zero spikes on Wheat.
+## Adding a commodity
 
-**Decision**: keep the 5% threshold and 1-day horizon consistent across
-all three commodities (no special-casing Wheat to get a better-looking
-number), keep Wheat in the pipeline, and report this as a genuine
-finding about Wheat's volatility profile at this market/threshold — not
-a missing feature. The dashboard shows Wheat's price/news normally and
-an explicit "no viable model" message instead of a fabricated
-prediction.
+Commodities live in one file, `src/config.py` (archive name, benchmark market, news pattern, live market name,
+and whether a viable model exists). Screening comes first:
 
-## Result: sentiment mattered less than expected — also a real finding
+```bash
+python src/screen_commodities.py --names tomato potato --top-markets 8     # compare markets
+python src/screen_commodities.py --names tomato --live-only                # only markets present in today's live feed
+python src/check_live_markets.py Potato:Khatra "Potato:Bishnupur (Bankura)"
+```
 
-Random Forest's SHAP importance ranking is dominated by price-derived
-features (`rolling_std_7d`, `momentum_7d`, `pct_change_1d`, etc.) for
-both Onion and Soyabean. `sentiment_negative_mean` barely enters
-Onion's top 10; no sentiment feature appears in Soyabean's top 10 at
-all. The FinBERT pipeline was built and validated carefully (including
-finding and fixing the domain-gap bug above), and the honest conclusion
-is that **it contributes little incremental predictive value over price
-data alone** in this project's final models — plausibly because
-(a) Onion's real crisis coverage is reactive/coincident with price
-moves rather than leading them, and (b) Soyabean's sentiment coverage
-is only ~1.7% of trading days. Reported as a finding, not hidden.
+The screen applies the pipeline's own definitions to the whole archive. Its verdicts matched the three original
+outcomes (Onion NOISY -> weak model; Soyabean CANDIDATE -> usable model; Wheat TOO-FEW-SPIKES -> no model),
+though three cases are too few to prove the rule. Passing the screen is necessary, not sufficient: Potato was
+the strongest candidate and still produced a negative result.
 
-## Why Onion underperformed Soyabean despite better data
+## Method and leakage controls
 
-Counterintuitively, Random Forest scored far better on Soyabean
-(F1 0.657, ROC-AUC 0.873) than Onion (F1 0.309, ROC-AUC 0.585), despite
-Onion having more news coverage and a higher spike rate. Investigated
-directly: Onion's *non-spike* days already average a 6.68% absolute
-daily price move — a 5% "spike" barely stands out from routine noise.
-Soyabean's non-spike days average only 2.76% — a real spike is a
-genuine outlier against a much calmer baseline. Soyabean's spikes are
-also more directly foreshadowed by the immediately preceding day's
-price move (correlation r=-0.226, vs. Onion's r=-0.072) — confirmed
-independently by SHAP, where `pct_change_1d` is Soyabean's single most
-important feature.
+* **Target:** spike = the next *reported* trading day's price is >= 5% above today's (mandis do not report every
+  calendar day, so "next day" means the next day the market reported).
+* **One price per day:** the mean modal price across varieties at one benchmark market (not a national average).
+* **Features (19):** price, min/max, rolling mean/std (3 and 7 reported days), momentum, lag, 1- and 3-day change,
+  intraday range, and daily sentiment aggregates with a `has_news` flag. Every feature for day *t* uses only data
+  up to *t*; `shift(-1)` is used once, to build the label.
+* **Evaluation:** chronological split (80/20; 70/30 only where 80/20 left too few test spikes), scalers fit on
+  training data only, class weighting, and accuracy / precision / recall / F1 / ROC-AUC / confusion matrix.
+  Metrics with too few positives are flagged as unstable instead of being reported as results.
+* **Window:** 2013-07-01 to 2023-06-30, the overlap of the price data and the news dataset (which ends 2023-06-30).
 
-## Other limitations
+## Findings
 
-- **Headline-only news text** (no article body) — a defensible choice
-  for FinBERT specifically (closer to its training distribution than
-  full articles), not a workaround for lack of effort.
-- **Day-level dates only**, both price and news sources — no intra-day
-  timestamps, so same-day ordering between a headline's publish time
-  and a price report is not resolvable with this data.
-- **XGBoost's `scale_pos_weight` was computed with the standard formula
-  and not tuned** — its true ceiling on this data is unknown, only its
-  out-of-the-box performance was evaluated.
-- **No live data feed.** All dashboard output reflects the fixed
-  2013-07-01–2023-06-30 window, not real-time prices or news.
+* **FinBERT domain gap.** FinBERT was trained on investor language, where rising prices are good news. It scored
+  **58.6% of "price up" headlines as positive** (e.g. "Onion prices shoot up by 52%": 0.92 positive), while "price
+  down" headlines were scored correctly 89.9% of the time. A narrow rule flipped positive/negative for
+  price-rise language (130 of 1,898 headlines, measured on the original three commodities). Output/export-volume
+  language with the same ambiguity was identified and deliberately left uncorrected.
+* **Sentiment added little.** SHAP ranks price-derived features (rolling volatility, momentum, 1-day change)
+  far above any sentiment feature for Onion and Soyabean.
+* **Why Onion is harder than Soyabean.** Onion's non-spike days already move 6.7% on average (Soyabean: 2.8%), so a
+  5% jump barely stands out. Soyabean's spikes are also better foreshadowed by the previous day's move
+  (correlation -0.226 vs -0.072).
+* **Wheat:** 11 spike events in 10 years. **Potato:** enough events (119) but no usable signal.
+* **Market choice matters a lot.** Spike rates for the same commodity vary hugely by market (tomato: about 10% to 40%
+  across large markets; onion: 6% at the best-covered market vs 22.5% at Lasalgaon), so the benchmark market is a
+  deliberate, documented decision.
+* **Data validation caught real problems:** a market-naming change in late 2025 (`APMC`), a `Soyabean`/`Soybean`
+  spelling split, duplicate rows, international futures wire headlines mislabelled as Indian market news, and a news
+  dataset that ends in June 2023.
 
-## Project structure
+## Limitations
 
+* No live news is collected, so live predictions use price features only.
+* The models use absolute price levels and were trained on 2013-2023, so scoring current prices is out-of-time.
+* Headline-level text only (no article bodies); keyword tagging includes some off-topic matches (idioms, recipes).
+  The onion and soyabean patterns match "onion"/"soybean" but not plurals ("onions"); this was left as is so
+  validated results stay unchanged, and is a known gap.
+* Wheat's and Potato's metrics rest on very few positives and should not be read as performance figures.
+* Soyabean's spikes cluster in 2020-2022 (107 of 177), and a linear model matches the Random Forest's ROC-AUC;
+  how much of its skill is genuine spike prediction versus recognising a high-volatility period has not been tested.
+* XGBoost was not tuned (only its out-of-the-box performance was compared).
+* Each stage was validated against its printed output as it was built; automated tests are not included.
 
-## Phase 16: daily live price collection + Live monitor tab
+## Repository layout
 
-**Status:** built and tested against a mocked API (outages, empty responses, missed days,
-duplicates, stale data, multi-year gaps, renamed markets). Real collection began in mid-October
-2026. A live prediction appears only after 7 recent trading days of real prices have been
-collected for a commodity, so results on real data grow with the collector's running time.
+```
+app.py                    Streamlit dashboard (historical backtest + live monitor)
+src/
+  config.py               commodities, markets, news patterns, paths (single source of truth)
+  preprocessing.py  sentiment.py  aggregate_sentiment.py  merge_price_sentiment.py
+  features.py  generate_target.py  train.py  explain.py        pipeline stages, in order
+  live_pipeline.py        daily collector + live scoring
+  screen_commodities.py  check_live_markets.py                 selection tools
+scripts/                  Windows scheduled-task setup for the collector
+data/interim/             processed outputs of each stage (committed)
+models/                   trained models + training_metadata.json (committed)
+reports/shap/             SHAP plots
+requirements.txt  .env.example  .gitignore
+```
 
-**How it works**
-- `src/live_pipeline.py collect` fetches the benchmark-market price from data.gov.in. A Windows
-  scheduled task (`setup_task.ps1` / `run_collect.bat`) runs it daily at 8 PM, runs it as soon as
-  possible if a run was missed, and retries up to 6 times, 10 minutes apart, if the API is down.
-- **One settled fetch per day:** from `SETTLE_HOUR` (18:00, a guess) a finished outcome closes the
-  day. Earlier runs never close it and never save a partly filled current day, but can save a
-  completed earlier day (catch-up). An outage never closes the day.
-- **Datewise, insert-only:** rows are keyed by the data's own arrival date. An existing date is
-  never overwritten and earlier rows never change. Only the market's latest date is averaged.
-- **Scoring uses only consecutive recent live rows** (at least 7, no gap over 7 days, latest row
-  at most 7 days old) and states why it refuses otherwise. An earlier version appended a live
-  price directly after the 2023 history and computed features across a ~3-year gap; it was replaced.
-- The dashboard's **Live monitor** tab reads only the saved files and never calls the API, so it
-  works while the API is down. Live and historical series are deliberately not joined.
-- `probe` is a read-only command that records how full the feed is at a given hour, so
-  `SETTLE_HOUR` can be tuned from evidence.
+## Data sources, licensing and attribution
 
-**Findings while building it (each found from real output, not assumed)**
-- The API returns an empty HTTP 502 unless a browser-like `User-Agent` is sent; the shared sample
-  key caps responses at 10 records; the `market` filter does not behave as an exact-name filter,
-  so filtering is done client-side.
-- **Market names in the live feed are formatted differently from the bulk archive:** spacing
-  (`Kanpur(Grain) APMC` vs `Kanpur (Grain) APMC`), trailing spaces, and APMC as a prefix
-  (`APMC Lasalgaon`), a suffix, or absent. Early versions matched exact strings and missed wheat and
-  onion; the collector now logs similarly named markets, which exposed this. Matching ignores
-  whitespace, case and APMC. Sub-yards (e.g. `Lasalgaon(Vinchur)`) are different markets and are
-  never substituted for the benchmark.
-- **The day's feed fills in gradually** (onion: 601 rows at 14:50, 759 at 19:34 on 2026-10-16),
-  which is why nothing is saved for the current day before the settle hour.
-
-**Limits**
-- No live news is collected, so live predictions are **price-only** (sentiment set to "no news").
-- The models were trained on 2013-2023 prices using absolute price levels, so scoring current
-  prices is out-of-time. Treat probabilities as indicative, not calibrated.
-- A day with no collector run has no row; as observed, the API returns only the latest day
-  (date filtering was not tested). The PC must be on and logged in for the scheduled task.
-- The settle hour is not yet validated; the probe data will show whether the feed is complete by then.
-- Wheat's live price is tracked but not scored (no viable model, see above).
-
-**Run:** `python src/live_pipeline.py collect | score | status | probe`, then `streamlit run app.py`.
+* Prices: Agmarknet (Ministry of Agriculture & Farmers Welfare, Government of India), via
+  [data.gov.in](https://www.data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi)
+  and a bulk Kaggle export. Check the portal's terms of use before reuse.
+* Headlines: Times of India headlines via the Kaggle dataset above. The few thousand headline strings in
+  `data/interim/news_*.csv` are a small research/demo sample; the rights belong to the publisher. Check each
+  Kaggle dataset's licence before redistributing.
+* Sentiment model: [ProsusAI/finbert](https://huggingface.co/ProsusAI/finbert).
+* Not a trading tool. Academic project.

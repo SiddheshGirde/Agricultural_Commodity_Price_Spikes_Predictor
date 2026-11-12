@@ -1,0 +1,20 @@
+# Core
+pandas
+numpy
+pyarrow            # reads the yearly Parquet price files
+requests
+python-dotenv      # reads DATA_GOV_IN_API_KEY from .env
+
+# Modeling
+scikit-learn
+xgboost
+joblib
+shap
+
+# NLP (FinBERT: ProsusAI/finbert, downloaded from Hugging Face on first use, ~400 MB)
+transformers
+torch
+
+# Dashboard / plots
+streamlit
+matplotlib

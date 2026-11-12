@@ -25,9 +25,10 @@ from pathlib import Path
 import pandas as pd
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
+from config import PROJECT_ROOT
 
-NEWS_CLEAN_PATH = Path(r"C:\Users\siddh\Desktop\PBL\data\interim\news_clean.csv")
-OUTPUT_PATH = Path(r"C:\Users\siddh\Desktop\PBL\data\interim\news_with_sentiment.csv")
+NEWS_CLEAN_PATH = (PROJECT_ROOT / "data/interim/news_clean.csv")
+OUTPUT_PATH = (PROJECT_ROOT / "data/interim/news_with_sentiment.csv")
 MODEL_NAME = "ProsusAI/finbert"
 
 # Requires "price"/"prices" within ~25 chars of rise-language, in either order,

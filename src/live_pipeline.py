@@ -68,8 +68,8 @@ import pandas as pd
 import requests
 from dotenv import load_dotenv
 
-PROJECT_ROOT = Path(os.environ.get("PBL_ROOT", r"C:\Users\siddh\Desktop\PBL"))
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))          # this file lives in src/
+from config import PROJECT_ROOT, COMMODITIES, commodities_with_model   # repo root, or $PBL_ROOT
 from features import engineer_price_features   # reused, not reimplemented
 from train import NON_FEATURE_COLS, MODELS_DIR  # reused, not reimplemented
 
@@ -88,12 +88,10 @@ LIVE_LOG_PATH = INTERIM / "live_collect_log.csv"
 LIVE_RAW_DIR = INTERIM / "live_raw"
 LABELED_PATH = INTERIM / "price_sentiment_with_target.csv"
 
-BENCHMARK_MARKETS_LIVE = {
-    "Onion": "Lasalgaon APMC",
-    "Soyabean": "Indore APMC",
-    "Wheat": "Kanpur (Grain) APMC",
-}
-COMMODITIES_WITH_MODEL = ["Onion", "Soyabean"]
+# Both come from config.py: adding a commodity there adds it to collection; has_viable_model there
+# decides whether it is scored.
+BENCHMARK_MARKETS_LIVE = {c: cfg["live_market"] for c, cfg in COMMODITIES.items()}
+COMMODITIES_WITH_MODEL = commodities_with_model()
 
 RETRIES = 3
 BACKOFF_SECONDS = [3, 8]       # waits between attempts 1->2 and 2->3
@@ -456,7 +454,7 @@ def score_one(commodity: str, feature_cols: list = None, today: pd.Timestamp = N
         out.update(status="missing_values", reason="feature row contains missing values")
         return out
     if commodity not in COMMODITIES_WITH_MODEL:
-        out.update(status="no_model", reason="no viable model for this commodity (Phase 11)")
+        out.update(status="no_model", reason="no viable model for this commodity (see config.py)")
         return out
     model = joblib.load(MODELS_DIR / f"{commodity.lower()}_random_forest.pkl")
     out.update(status="scored", proba=float(model.predict_proba(X)[0][1]))

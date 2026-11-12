@@ -21,10 +21,11 @@ Output: data/interim/price_sentiment_merged.csv
 
 from pathlib import Path
 import pandas as pd
+from config import PROJECT_ROOT
 
-PRICES_PATH = Path(r"C:\Users\siddh\Desktop\PBL\data\interim\prices_clean.csv")
-SENTIMENT_PATH = Path(r"C:\Users\siddh\Desktop\PBL\data\interim\sentiment_daily.csv")
-OUTPUT_PATH = Path(r"C:\Users\siddh\Desktop\PBL\data\interim\price_sentiment_merged.csv")
+PRICES_PATH = (PROJECT_ROOT / "data/interim/prices_clean.csv")
+SENTIMENT_PATH = (PROJECT_ROOT / "data/interim/sentiment_daily.csv")
+OUTPUT_PATH = (PROJECT_ROOT / "data/interim/price_sentiment_merged.csv")
 
 
 def merge_price_and_sentiment(prices: pd.DataFrame, sentiment: pd.DataFrame) -> pd.DataFrame:

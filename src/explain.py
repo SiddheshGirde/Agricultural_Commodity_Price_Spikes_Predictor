@@ -25,8 +25,9 @@ import shap
 import matplotlib.pyplot as plt
 
 from train import INPUT_PATH, MODELS_DIR, NON_FEATURE_COLS, choose_split
+from config import PROJECT_ROOT
 
-REPORTS_DIR = Path(r"C:\Users\siddh\Desktop\PBL\reports\shap")
+REPORTS_DIR = (PROJECT_ROOT / "reports/shap")
 COMMODITIES_TO_EXPLAIN = ["Onion", "Soyabean"]  # Wheat deliberately excluded - see module docstring
 
 

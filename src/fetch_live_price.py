@@ -25,6 +25,7 @@ from pathlib import Path
 import pandas as pd
 import requests
 from dotenv import load_dotenv
+from config import PROJECT_ROOT
 
 load_dotenv()
 API_KEY = os.environ["DATA_GOV_IN_API_KEY"]
@@ -40,7 +41,7 @@ BENCHMARK_MARKETS_LIVE = {
     "Wheat": "Kanpur (Grain) APMC",
 }
 
-LIVE_LOG_PATH = Path(r"C:\Users\siddh\Desktop\PBL\data\interim\live_fetch_log.csv")
+LIVE_LOG_PATH = (PROJECT_ROOT / "data/interim/live_fetch_log.csv")
 
 
 def fetch_commodity_nationwide(commodity: str, limit: int = 1000) -> pd.DataFrame:

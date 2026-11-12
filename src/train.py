@@ -27,9 +27,10 @@ from sklearn.metrics import (accuracy_score, classification_report,
                               recall_score, roc_auc_score)
 from sklearn.preprocessing import StandardScaler
 from xgboost import XGBClassifier
+from config import PROJECT_ROOT
 
-INPUT_PATH = Path(r"C:\Users\siddh\Desktop\PBL\data\interim\price_sentiment_with_target.csv")
-MODELS_DIR = Path(r"C:\Users\siddh\Desktop\PBL\models")
+INPUT_PATH = (PROJECT_ROOT / "data/interim/price_sentiment_with_target.csv")
+MODELS_DIR = (PROJECT_ROOT / "models")
 
 MIN_TEST_SPIKES_FOR_STABLE_METRICS = 5
 

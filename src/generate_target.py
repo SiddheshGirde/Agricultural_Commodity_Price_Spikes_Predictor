@@ -24,9 +24,10 @@ Output: data/interim/price_sentiment_with_target.csv
 from pathlib import Path
 import numpy as np
 import pandas as pd
+from config import PROJECT_ROOT
 
-INPUT_PATH = Path(r"C:\Users\siddh\Desktop\PBL\data\interim\price_sentiment_features.csv")
-OUTPUT_PATH = Path(r"C:\Users\siddh\Desktop\PBL\data\interim\price_sentiment_with_target.csv")
+INPUT_PATH = (PROJECT_ROOT / "data/interim/price_sentiment_features.csv")
+OUTPUT_PATH = (PROJECT_ROOT / "data/interim/price_sentiment_with_target.csv")
 
 SPIKE_THRESHOLD_PCT = 5.0
 
